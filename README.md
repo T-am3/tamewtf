@@ -51,29 +51,6 @@ src/
 - **tailwind css 4** - utility-first styling
 - **dynamic git hash** - build info in footer
 
-## key features
-
-### design
-- glass morphism ui with dark theme
-- scroll-triggered animations (intersection observer)
-- responsive mobile-first design
-- micro-interactions and hover effects
-
-### functionality
-- multi-page spa with smooth routing
-- collapsible faq section on about page
-- filterable work portfolio (vfx, music, web, ui/ux)
-- random featured project selection on home
-- fake theme toggle with sarcastic message
-- centralized project data management
-
-### ux improvements
-- removed emojis throughout for cleaner aesthetic
-- interactive scroll indicator with smooth scrolling
-- removed social interaction elements (likes/shares)
-- streamlined contact form without availability status
-- mobile navigation with proper black theme
-
 ## content management
 
 ### adding projects
@@ -109,19 +86,3 @@ const skills = {
 - vite config automatically injects `__GIT_HASH__` global
 - build includes all optimizations for production
 - configured for custom domain (tame.wtf)
-
-## recent changes
-
-- removed all emojis for professional aesthetic
-- added ui/ux category across all pages
-- implemented collapsible faq with smooth animations
-- removed privacy link from footer
-- disabled faq section from contact page
-- added fake theme toggle with humorous response
-- fixed mobile navigation and contact form theming
-- centralized project data for consistency
-- enhanced about page with better content organization
-
----
-
-**personal creative portfolio** - built for showcasing multidisciplinary work
