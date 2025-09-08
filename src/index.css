@@ -1,11 +1,436 @@
+/* Enhanced animations and utilities */
+@import "tailwindcss";
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: 'Karla', system-ui, -apple-system, sans-serif;
+  --scroll-offset: 0px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Karla', system-ui, -apple-system, sans-serif;
 }
 
 body {
+  overflow-x: hidden;
+  overflow-y: auto;
   margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
 }
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 300ms ease-out;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 300ms ease-in;
+}
+
+/* Stagger animations */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0.1s; }
+.stagger-item:nth-child(2) { animation-delay: 0.2s; }
+.stagger-item:nth-child(3) { animation-delay: 0.3s; }
+.stagger-item:nth-child(4) { animation-delay: 0.4s; }
+.stagger-item:nth-child(5) { animation-delay: 0.5s; }
+.stagger-item:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scribble animation */
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawLoop {
+  0% {
+    stroke-dashoffset: 450;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 450;
+  }
+}
+
+/* Pulse animation for CTAs */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.1);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff, #999999);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Loading spinner */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Text reveal animation */
+.text-reveal {
+  overflow: hidden;
+}
+
+.text-reveal span {
+  display: inline-block;
+  transform: translateY(100%);
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Parallax effect */
+.parallax {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Focus styles for accessibility */
+*:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .text-gray-400 {
+    color: #cccccc !important;
+  }
+  
+  .text-gray-500 {
+    color: #aaaaaa !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  * {
+    color: black !important;
+    background: white !important;
+  }
+}
+
+/* Additional Enhancement Classes */
+
+/* Progressive enhancement */
+@supports (backdrop-filter: blur(10px)) {
+  .glass-enhanced {
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  .glass {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Component-specific styles */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.project-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.project-card:hover::before {
+  transform: translateX(100%);
+}
+
+.feature-highlight {
+  position: relative;
+  z-index: 1;
+}
+
+.feature-highlight::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-highlight:hover::before {
+  opacity: 1;
+}
+
+/* Advanced animations */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 50% { border-color: transparent; }
+  51%, 100% { border-color: white; }
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid white;
+  white-space: nowrap;
+  animation: typewriter 3s steps(30) 1s forwards, blink 1s step-end infinite;
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideInFromTop {
+  animation: slideInFromTop 0.6s ease-out forwards;
+}
+
+/* Theme transitions */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Responsive typography */
+.text-responsive {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.heading-responsive {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.2;
+}
+
+.subheading-responsive {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  line-height: 1.3;
+}
+
+/* Loading state improvements */
+.loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.loading * {
+  cursor: wait !important;
+}
+
+/* Enhanced form styles */
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.02);
+}
+
+/* Custom details/summary styling */
+details summary {
+  cursor: pointer;
+  user-select: none;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Utility enhancements */
+.container-responsive {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+}
+
+.section-padding {
+  padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
