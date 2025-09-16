@@ -1,227 +1,256 @@
-import { useState } from 'react'
-import { ScrollAnimation } from '../components/ScrollAnimation'
-import { projects, getFeaturedProjects } from '../data/projects'
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ScrollAnimation } from "../components/ScrollAnimation";
+import {
+  getAllProjects,
+  getAllProjectTags,
+  type Project,
+} from "../utils/markdown";
 
 export default function Work() {
-  const [activeFilter, setActiveFilter] = useState('all')
+  const [selectedTag, setSelectedTag] = useState("all");
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filters = [
-    { id: 'all', label: 'all projects' },
-    { id: 'vfx', label: 'visual effects' },
-    { id: 'music', label: 'music' },
-    { id: 'web', label: 'web development' },
-    { id: 'uiux', label: 'ui/ux design' }
-  ]
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setError(null);
+        const [projectsData, tags] = await Promise.all([
+          getAllProjects(),
+          getAllProjectTags(),
+        ]);
 
-  const filteredProjects = activeFilter === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter)
+        if (projectsData.length === 0) {
+          setError("No projects found");
+        } else {
+          setProjects(projectsData);
+          setAvailableTags(tags);
+        }
+      } catch (error) {
+        console.error("Error loading projects:", error);
+        setError("Failed to load projects");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const featuredProjects = getFeaturedProjects()
+    loadProjects();
+  }, []);
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'vfx': return 'bg-purple-500/10 text-purple-400 border-purple-500/20'
-      case 'music': return 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-      case 'web': return 'bg-green-500/10 text-green-400 border-green-500/20'
-      case 'uiux': return 'bg-orange-500/10 text-orange-400 border-orange-500/20'
-      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
-    }
-  }
+  const filteredProjects =
+    selectedTag === "all"
+      ? projects
+      : projects.filter(
+          (project: Project) =>
+            project.tags && project.tags.includes(selectedTag)
+        );
 
   return (
     <div className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <ScrollAnimation>
           <div className="mb-20">
-            <h1 className="text-5xl md:text-6xl font-light text-white mb-8 gradient-text">work</h1>
+            <h1 className="text-5xl md:text-6xl font-light text-white mb-8 gradient-text">
+              projects
+            </h1>
             <div className="w-20 h-1 bg-gradient-to-r from-white to-gray-500 mb-8" />
-            <p className="text-xl text-gray-400 max-w-3xl leading-relaxed">
-              exploring the intersection of technology, art, and sound through creative projects 
-              that push boundaries and inspire connection.
+            <p className="text-xl text-gray-300 leading-relaxed max-w-3xl">
+              a collection of random experiments, side projects, and creative
+              ideas i've been working on. some work, some don't, but all were
+              fun to build.
             </p>
           </div>
         </ScrollAnimation>
 
-        {/* Featured Projects */}
-        <ScrollAnimation delay={200}>
-          <section className="mb-20">
-            <h2 className="text-3xl text-white mb-8 flex items-center">
-              <span className="w-2 h-2 bg-white rounded-full mr-3" />
-              featured projects
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {featuredProjects.slice(0, 4).map((project) => (
-                <div key={project.id} className="glass rounded-lg p-8 hover-lift group cursor-pointer">
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <h3 className="text-xl text-white mb-2 group-hover:text-gray-300 transition-colors">
-                        {project.title}
-                      </h3>
-                      <div className="flex items-center gap-3">
-                        <span className={`text-xs px-3 py-1 rounded-full border ${getCategoryColor(project.category)}`}>
-                          {project.category}
-                        </span>
-                        <span className="text-xs text-gray-500">{project.year}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="h-40 bg-gray-900 rounded-lg flex items-center justify-center mb-6 group-hover:bg-gray-800 transition-colors">
-                    <span className="text-gray-600 text-sm">preview</span>
-                  </div>
-                  
-                  <p className="text-gray-400 text-sm mb-6 leading-relaxed">{project.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tools.map((tool) => (
-                      <span key={tool} className="text-gray-500 text-xs glass rounded-full px-3 py-1">
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  <div className="flex gap-4">
-                    {project.category === 'web' ? (
-                      <>
-                        <a href={project.liveUrl} className="text-white hover:text-gray-300 text-sm underline underline-offset-4">
-                          view live
-                        </a>
-                        <a href={project.sourceUrl} className="text-gray-400 hover:text-white text-sm underline underline-offset-4">
-                          source code
-                        </a>
-                      </>
-                    ) : project.category === 'music' ? (
-                      <a href="#" className="text-white hover:text-gray-300 text-sm underline underline-offset-4">
-                        listen
-                      </a>
-                    ) : (
-                      <a href="#" className="text-white hover:text-gray-300 text-sm underline underline-offset-4">
-                        view reel
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </ScrollAnimation>
-
         {/* Filter Navigation */}
-        <ScrollAnimation delay={300}>
+        <ScrollAnimation delay={200}>
           <div className="mb-12">
-            <div className="flex flex-wrap gap-4 justify-center">
-              {filters.map((filter) => (
+            <div className="flex flex-wrap gap-3">
+              <button
+                key="all"
+                onClick={() => setSelectedTag("all")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                  selectedTag === "all"
+                    ? "bg-white text-black"
+                    : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white"
+                }`}
+              >
+                everything
+              </button>
+              {availableTags.map((tag) => (
                 <button
-                  key={filter.id}
-                  onClick={() => setActiveFilter(filter.id)}
-                  className={`px-6 py-3 rounded-lg transition-all duration-300 ${
-                    activeFilter === filter.id
-                      ? 'bg-white text-black font-medium'
-                      : 'glass text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  key={tag}
+                  onClick={() => setSelectedTag(tag)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    selectedTag === tag
+                      ? "bg-white text-black"
+                      : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white"
                   }`}
                 >
-                  {filter.label}
+                  {tag}
                 </button>
               ))}
             </div>
           </div>
         </ScrollAnimation>
 
+        {/* Error State */}
+        {error && !loading && (
+          <ScrollAnimation delay={300}>
+            <div className="text-center py-12">
+              <div className="glass rounded-xl p-8 border border-red-500/20">
+                <h3 className="text-xl text-white mb-4">
+                  oops, something went wrong
+                </h3>
+                <p className="text-gray-400 mb-6">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-6 py-2 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors"
+                >
+                  try again
+                </button>
+              </div>
+            </div>
+          </ScrollAnimation>
+        )}
+
+        {/* Empty Filter State */}
+        {!loading &&
+          !error &&
+          filteredProjects.length === 0 &&
+          projects.length > 0 && (
+            <ScrollAnimation delay={300}>
+              <div className="text-center py-16">
+                <div className="w-16 h-16 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
+                  <svg
+                    className="w-8 h-8 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl text-white mb-2">no projects found</h3>
+                <p className="text-gray-400">
+                  try selecting a different category
+                </p>
+              </div>
+            </ScrollAnimation>
+          )}
+
         {/* All Projects Grid */}
-        <ScrollAnimation delay={400}>
-          <section>
+        {!loading && !error && filteredProjects.length > 0 && (
+          <ScrollAnimation delay={300}>
+            <section>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredProjects.map((project, index) => (
+                  <ScrollAnimation key={project.id} delay={300 + index * 100}>
+                    <article className="group">
+                      <Link
+                        to={`/work/${project.slug}`}
+                        className="block glass rounded-xl hover-lift transition-all duration-500 border border-gray-800/50 hover:border-gray-600/50 overflow-hidden"
+                      >
+                        {/* Project Image */}
+                        <div className="aspect-video bg-gray-900 relative overflow-hidden">
+                          {project.previewImage ? (
+                            <img
+                              src={project.previewImage}
+                              alt={project.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
+                              <span className="text-gray-600 text-sm">
+                                preview
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Project Content */}
+                        <div className="p-6">
+                          <h2 className="text-lg font-light text-white group-hover:text-gray-200 transition-colors mb-2">
+                            {project.title}
+                          </h2>
+
+                          {project.year && (
+                            <time className="text-gray-500 text-xs mb-3 block">
+                              {project.year}
+                            </time>
+                          )}
+
+                          <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors mb-4 line-clamp-3">
+                            {project.description}
+                          </p>
+
+                          <div className="flex items-center text-gray-400 group-hover:text-white transition-colors">
+                            <span className="text-sm">view project</span>
+                            <svg
+                              className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </Link>
+                    </article>
+                  </ScrollAnimation>
+                ))}
+              </div>
+            </section>
+          </ScrollAnimation>
+        )}
+
+        {/* Loading State */}
+        {loading && (
+          <ScrollAnimation delay={300}>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProjects.map((project) => (
-                <div key={project.id} className="glass rounded-lg p-6 hover-lift group cursor-pointer">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <span className={`text-xs px-2 py-1 rounded-full border ${getCategoryColor(project.category)}`}>
-                        {project.category}
-                      </span>
-                    </div>
-                    <span className="text-xs text-gray-500">{project.year}</span>
-                  </div>
-                  
-                  <div className="h-32 bg-gray-900 rounded-lg flex items-center justify-center mb-4 group-hover:bg-gray-800 transition-colors">
-                    <span className="text-gray-600 text-sm">preview</span>
-                  </div>
-                  
-                  <h3 className="text-lg text-white mb-3 group-hover:text-gray-300 transition-colors">
-                    {project.title}
-                  </h3>
-                  
-                  <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-3">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {project.tools.slice(0, 3).map((tool) => (
-                      <span key={tool} className="text-gray-500 text-xs glass rounded px-2 py-1">
-                        {tool}
-                      </span>
-                    ))}
-                    {project.tools.length > 3 && (
-                      <span className="text-gray-500 text-xs">+{project.tools.length - 3} more</span>
-                    )}
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    {project.category === 'web' ? (
-                      <div className="flex gap-2">
-                        <a href={project.liveUrl} className="text-white hover:text-gray-300 text-sm underline underline-offset-4">
-                          view
-                        </a>
-                        <a href={project.sourceUrl} className="text-gray-400 hover:text-white text-sm underline underline-offset-4">
-                          code
-                        </a>
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="glass rounded-xl border border-gray-800/50 overflow-hidden"
+                >
+                  <div className="animate-pulse">
+                    <div className="aspect-video bg-gray-700"></div>
+                    <div className="p-6">
+                      <div className="flex justify-between items-center mb-3">
+                        <div className="w-3/4 h-5 bg-gray-700 rounded"></div>
+                        <div className="w-12 h-4 bg-gray-700 rounded"></div>
                       </div>
-                    ) : (
-                      <a href="#" className="text-white hover:text-gray-300 text-sm underline underline-offset-4">
-                        {project.category === 'music' ? 'listen' : 'view'}
-                      </a>
-                    )}
-                    
-                    {project.featured && (
-                      <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-1 rounded-full border border-yellow-500/20">
-                        featured
-                      </span>
-                    )}
+                      <div className="space-y-2 mb-4">
+                        <div className="w-full h-4 bg-gray-700 rounded"></div>
+                        <div className="w-2/3 h-4 bg-gray-700 rounded"></div>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="w-16 h-5 bg-gray-700 rounded"></div>
+                        <div className="w-20 h-5 bg-gray-700 rounded"></div>
+                        <div className="w-14 h-5 bg-gray-700 rounded"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
-          </section>
-        </ScrollAnimation>
-
-        {/* Call to action */}
-        <ScrollAnimation delay={500}>
-          <div className="text-center mt-20 pt-16 border-t border-gray-800">
-            <h2 className="text-3xl text-white mb-6">interested in collaborating?</h2>
-            <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-              i'm always excited to work on new projects and bring creative ideas to life. 
-              let's discuss how we can create something amazing together.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="mailto:hello@tame.wtf" 
-                className="inline-flex items-center px-8 py-4 bg-white text-black rounded-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 font-medium"
-              >
-                start a project
-                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-              <a 
-                href="#" 
-                className="inline-flex items-center px-8 py-4 border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 hover:scale-105"
-              >
-                view process
-              </a>
-            </div>
-          </div>
-        </ScrollAnimation>
+          </ScrollAnimation>
+        )}
       </div>
     </div>
-  )
+  );
 }

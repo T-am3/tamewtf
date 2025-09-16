@@ -33,80 +33,16 @@ export default function Contact() {
     setTimeout(() => setSubmitStatus('idle'), 5000)
   }
 
-  const socialLinks = [
-    {
-      platform: 'email',
-      icon: '📧',
-      label: 'hello@tame.wtf',
-      href: 'mailto:hello@tame.wtf',
-      description: 'best for project inquiries'
-    },
-    {
-      platform: 'twitter',
-      icon: '🐦',
-      label: '@tamewtf',
-      href: '#',
-      description: 'follow for updates'
-    },
-    {
-      platform: 'linkedin',
-      icon: '💼',
-      label: 'linkedin.com/in/tamewtf',
-      href: '#',
-      description: 'professional network'
-    },
-    {
-      platform: 'github',
-      icon: '💻',
-      label: 'github.com/tamewtf',
-      href: '#',
-      description: 'code & projects'
-    },
-    {
-      platform: 'instagram',
-      icon: '📸',
-      label: '@tame.wtf',
-      href: '#',
-      description: 'behind the scenes'
-    },
-    {
-      platform: 'spotify',
-      icon: '🎵',
-      label: 'tame on spotify',
-      href: '#',
-      description: 'listen to my music'
-    }
-  ]
-
-  // const faqItems = [
-  //   {
-  //     question: "what's your typical project timeline?",
-  //     answer: "project timelines vary depending on scope and complexity. simple web projects typically take 2-4 weeks, while complex vfx or music production projects can take 6-12 weeks."
-  //   },
-  //   {
-  //     question: "do you work with international clients?",
-  //     answer: "absolutely! i work with clients worldwide and am comfortable with remote collaboration across different time zones."
-  //   },
-  //   {
-  //     question: "what's your pricing structure?",
-  //     answer: "i offer both project-based and hourly rates depending on the scope. after our initial consultation, i'll provide a detailed quote tailored to your specific needs."
-  //   },
-  //   {
-  //     question: "can you help with ongoing projects?",
-  //     answer: "yes, i'm available for both one-time projects and ongoing retainer work. i love building long-term relationships with clients."
-  //   }
-  // ]
-
   return (
     <div className="py-20 px-4">
       <div className="max-w-4xl mx-auto">
         <ScrollAnimation>
           <div className="mb-20">
-            <h1 className="text-5xl md:text-6xl font-light text-white mb-8 gradient-text">let's connect</h1>
+            <h1 className="text-5xl md:text-6xl font-light text-white mb-8 gradient-text">hello!</h1>
             <div className="w-20 h-1 bg-gradient-to-r from-white to-gray-500 mb-8" />
             <p className="text-xl text-gray-300 leading-relaxed max-w-3xl">
-              ready to bring your creative vision to life? i'd love to hear about your project 
-              and explore how we can create something extraordinary together.
+              want to chat about a project, collaborate on something cool, or just say hello? 
+              drop me a line - i love meeting new people and hearing about interesting ideas.
             </p>
           </div>
         </ScrollAnimation>
@@ -117,7 +53,7 @@ export default function Contact() {
               <div>
                 <h2 className="text-2xl text-white mb-8 flex items-center">
                   <span className="w-2 h-2 bg-white rounded-full mr-3" />
-                  let's talk
+                  get in touch
                 </h2>
                 <div className="space-y-6">
                   <p className="text-lg text-gray-300 leading-relaxed">
@@ -130,37 +66,6 @@ export default function Contact() {
                   </p>
                 </div>
               </div>
-
-              <div>
-                <h3 className="text-xl text-white mb-6 flex items-center">
-                  <span className="text-lg mr-3">🌐</span>
-                  connect with me
-                </h3>
-                <div className="grid grid-cols-1 gap-4">
-                  {socialLinks.map((link) => (
-                    <a
-                      key={link.platform}
-                      href={link.href}
-                      className="glass rounded-lg p-4 hover-lift group transition-all duration-300"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <span className="text-xl mr-4">{link.icon}</span>
-                          <div>
-                            <div className="text-gray-300 group-hover:text-white transition-colors">
-                              {link.label}
-                            </div>
-                            <div className="text-gray-500 text-sm">{link.description}</div>
-                          </div>
-                        </div>
-                        <svg className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </div>
             </div>
           </ScrollAnimation>
 
@@ -168,7 +73,7 @@ export default function Contact() {
             <div>
               <h2 className="text-2xl text-white mb-8 flex items-center">
                 <span className="w-2 h-2 bg-white rounded-full mr-3" />
-                start a conversation
+                drop me a line
               </h2>
               
               {submitStatus === 'success' && (

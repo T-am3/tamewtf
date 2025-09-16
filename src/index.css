@@ -2,13 +2,14 @@
 @import "tailwindcss";
 
 :root {
-  font-family: 'Karla', system-ui, -apple-system, sans-serif;
+  font-family: "Karla", system-ui, -apple-system, sans-serif;
   --scroll-offset: 0px;
 }
 
-html, body {
+html,
+body {
   height: 100%;
-  font-family: 'Karla', system-ui, -apple-system, sans-serif;
+  font-family: "Karla", system-ui, -apple-system, sans-serif;
 }
 
 body {
@@ -76,12 +77,24 @@ html {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-.stagger-item:nth-child(1) { animation-delay: 0.1s; }
-.stagger-item:nth-child(2) { animation-delay: 0.2s; }
-.stagger-item:nth-child(3) { animation-delay: 0.3s; }
-.stagger-item:nth-child(4) { animation-delay: 0.4s; }
-.stagger-item:nth-child(5) { animation-delay: 0.5s; }
-.stagger-item:nth-child(6) { animation-delay: 0.6s; }
+.stagger-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.stagger-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.stagger-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.stagger-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.stagger-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.stagger-item:nth-child(6) {
+  animation-delay: 0.6s;
+}
 
 @keyframes fadeInUp {
   to {
@@ -111,7 +124,8 @@ html {
 
 /* Pulse animation for CTAs */
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
   }
   50% {
@@ -185,8 +199,22 @@ html {
   will-change: transform;
 }
 
-/* Focus styles for accessibility */
+/* Focus styles for accessibility - only show on keyboard navigation */
 *:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+/* Ensure buttons and links have proper focus states */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.8);
   outline-offset: 2px;
 }
@@ -196,7 +224,7 @@ html {
   .text-gray-400 {
     color: #cccccc !important;
   }
-  
+
   .text-gray-500 {
     color: #aaaaaa !important;
   }
@@ -219,7 +247,7 @@ html {
   .no-print {
     display: none !important;
   }
-  
+
   * {
     color: black !important;
     background: white !important;
@@ -248,7 +276,7 @@ html {
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
@@ -270,13 +298,18 @@ html {
 }
 
 .project-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
   transform: translateX(-100%);
   transition: transform 0.6s ease;
 }
@@ -291,7 +324,7 @@ html {
 }
 
 .feature-highlight::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -2px;
   background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b);
@@ -307,13 +340,23 @@ html {
 
 /* Advanced animations */
 @keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 @keyframes blink {
-  0%, 50% { border-color: transparent; }
-  51%, 100% { border-color: white; }
+  0%,
+  50% {
+    border-color: transparent;
+  }
+  51%,
+  100% {
+    border-color: white;
+  }
 }
 
 .typewriter {
@@ -338,9 +381,21 @@ html {
   animation: slideInFromTop 0.6s ease-out forwards;
 }
 
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* Theme transitions */
 .theme-transition {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 /* Responsive typography */
@@ -433,4 +488,3 @@ details[open] summary {
   white-space: nowrap;
   border: 0;
 }
-

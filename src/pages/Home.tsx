@@ -1,61 +1,91 @@
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import wavingHandWebp from '../assets/Waving Hand.webp'
-import { ScrollAnimation } from '../components/ScrollAnimation'
-import { getRandomFeaturedProjects, type Project } from '../data/projects'
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import wavingHandWebp from "../assets/Waving Hand.webp";
+import { ScrollAnimation } from "../components/ScrollAnimation";
+import { getAllProjects, type Project } from "../utils/markdown";
 
 export default function Home() {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [workItems, setWorkItems] = useState<Project[]>([])
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [workItems, setWorkItems] = useState<Project[]>([]);
 
   useEffect(() => {
-    setIsLoaded(true)
-    // Get 4 random featured projects on component mount
-    setWorkItems(getRandomFeaturedProjects(4))
-  }, [])
+    setIsLoaded(true);
+    
+    // Load projects from markdown files
+    const loadProjects = async () => {
+      try {
+        const projects = await getAllProjects();
+        // Get featured projects and limit to 4
+        const featured = projects.filter(p => p.featured).slice(0, 4);
+        setWorkItems(featured);
+      } catch (error) {
+        console.error('Error loading projects:', error);
+      }
+    };
+    
+    loadProjects();
+  }, []);
 
   return (
-    <div className="w-full">
-      {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-900/20 via-black to-gray-900/20 pointer-events-none" />
-      
+    <div className="w-full relative">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-center min-h-screen px-4 pb-20 overflow-hidden">
-        {/* Animated background dots */}
+      <section className="relative flex items-center justify-center min-h-screen px-4 pb-20 overflow-hidden bg-gradient-to-br from-gray-900/30 via-black to-purple-900/20 -mt-16 pt-16">
+        {/* Enhanced animated background */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(50)].map((_, i) => (
+          {/* Floating particles */}
+          {[...Array(80)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-white/5 rounded-full animate-pulse"
+              className="absolute rounded-full animate-pulse"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
+                width: `${2 + Math.random() * 4}px`,
+                height: `${2 + Math.random() * 4}px`,
+                backgroundColor: `rgba(255, 255, 255, ${
+                  0.02 + Math.random() * 0.08
+                })`,
                 animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 3}s`
+                animationDuration: `${3 + Math.random() * 4}s`,
               }}
             />
           ))}
+
+          {/* Gradient orbs */}
+          <div
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse"
+            style={{ animationDuration: "8s" }}
+          />
+          <div
+            className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse"
+            style={{ animationDuration: "6s", animationDelay: "2s" }}
+          />
         </div>
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="space-y-6">
             <div className="relative">
-              <h1 className={`text-5xl md:text-7xl font-light leading-tight transition-all duration-1000 ${
-                isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
-                hey, i'm <span className="relative inline-block">
-                  <span className="gradient-text">tame</span>
-                  <svg 
-                    width="136" 
-                    height="16" 
-                    viewBox="0 0 136 16" 
+              <h1
+                className={`text-5xl md:text-7xl font-light leading-tight transition-all duration-1000 ${
+                  isLoaded
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }`}
+              >
+                hey, i'm{" "}
+                <span className="relative inline-block">
+                  <span>tame</span>
+                  <svg
+                    width="136"
+                    height="16"
+                    viewBox="0 0 136 16"
                     className="absolute -bottom-1 left-0 w-full h-auto"
                     fill="none"
                   >
-                    <path 
-                      d="M2 7.5L22.7221 3.77001C24.7662 3.40208 26.5324 5.22102 26.1046 7.25337V7.25337C25.6275 9.5194 27.8464 11.4157 30.0104 10.5913L41.1145 6.36115C43.27 5.54001 45.4994 7.37821 45.1042 9.65071V9.65071C44.6694 12.1509 47.3636 14.0124 49.5483 12.7214L61.5257 5.6439C63.3084 4.59051 65.5124 6.08819 65.1895 8.13347V8.13347C64.8894 10.0336 66.7973 11.5215 68.5671 10.7677L86.3296 3.20222C88.558 2.25307 90.9521 4.15044 90.5371 6.53679V6.53679C90.1075 9.00673 92.6714 10.9143 94.9137 9.79314L100.628 6.93623C102.703 5.89841 105.096 7.60068 104.795 9.90183V9.90183C104.479 12.3313 107.133 14.0326 109.208 12.7297L120.741 5.48839C122.552 4.35102 124.849 5.91941 124.448 8.02048V8.02048C124.065 10.0331 126.175 11.5986 127.99 10.6479L134 7.5" 
-                      stroke="white" 
-                      strokeWidth="4" 
+                    <path
+                      d="M2 7.5L22.7221 3.77001C24.7662 3.40208 26.5324 5.22102 26.1046 7.25337V7.25337C25.6275 9.5194 27.8464 11.4157 30.0104 10.5913L41.1145 6.36115C43.27 5.54001 45.4994 7.37821 45.1042 9.65071V9.65071C44.6694 12.1509 47.3636 14.0124 49.5483 12.7214L61.5257 5.6439C63.3084 4.59051 65.5124 6.08819 65.1895 8.13347V8.13347C64.8894 10.0336 66.7973 11.5215 68.5671 10.7677L86.3296 3.20222C88.558 2.25307 90.9521 4.15044 90.5371 6.53679V6.53679C90.1075 9.00673 92.6714 10.9143 94.9137 9.79314L100.628 6.93623C102.703 5.89841 105.096 7.60068 104.795 9.90183V9.90183C104.479 12.3313 107.133 14.0326 109.208 12.7297L120.741 5.48839C122.552 4.35102 124.849 5.91941 124.448 8.02048V8.02048C124.065 10.0331 126.175 11.5986 127.99 10.6479L134 7.5"
+                      stroke="white"
+                      strokeWidth="4"
                       strokeLinecap="round"
                       strokeDasharray="450"
                       strokeDashoffset="450"
@@ -63,188 +93,358 @@ export default function Home() {
                     />
                   </svg>
                 </span>
-                <img 
-                  src={wavingHandWebp} 
-                  alt="waving hand" 
+                <img
+                  src={wavingHandWebp}
+                  alt="waving hand"
                   className="inline w-12 h-12 md:w-16 md:h-16 ml-3 animate-bounce"
-                  style={{ animationDelay: '2s' }}
-                />, full stack developer
+                  style={{ animationDelay: "2s" }}
+                />
+                , programmer
               </h1>
             </div>
-            <h2 className={`text-5xl md:text-7xl font-light transition-all duration-1000 delay-300 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
+            <h2
+              className={`text-5xl md:text-7xl font-light transition-all duration-1000 delay-300 ${
+                isLoaded
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+            >
               and musician making it
             </h2>
-            <h3 className={`text-5xl md:text-7xl font-light transition-all duration-1000 delay-500 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
+            <h3
+              className={`text-5xl md:text-7xl font-light transition-all duration-1000 delay-500 ${
+                isLoaded
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+            >
               one step at a time
             </h3>
-            
+
             {/* CTA buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 pt-8 transition-all duration-1000 delay-700 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
-              <Link 
-                to="/work" 
+            <div
+              className={`flex flex-col sm:flex-row gap-4 pt-8 transition-all duration-1000 delay-700 ${
+                isLoaded
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+            >
+              <Link
+                to="/work"
                 className="inline-flex items-center px-8 py-4 bg-white text-black rounded-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 pulse-glow font-medium"
               >
-                view my work
-                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                check out my stuff
+                <svg
+                  className="ml-2 w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 className="inline-flex items-center px-8 py-4 border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 hover:scale-105"
               >
-                get in touch
+                contact me
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <button 
-          className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer hover:scale-110 transition-transform duration-300"
-          onClick={() => {
-            document.getElementById('about-section')?.scrollIntoView({ 
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }}
-          aria-label="Scroll to about section"
-        >
-          <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center hover:border-gray-400 transition-colors">
-            <div className="w-1 h-3 bg-gray-600 rounded-full mt-2 animate-pulse" />
+        {/* Enhanced scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+          <div className="text-gray-500 text-sm mb-4 animate-pulse">
+            scroll to explore
           </div>
-        </button>
+          <button
+            className="group cursor-pointer hover:scale-110 transition-all duration-300"
+            onClick={() => {
+              document.getElementById("about-section")?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }}
+            aria-label="Scroll to about section"
+          >
+            <div className="w-8 h-12 border-2 border-gray-500 rounded-full flex justify-center group-hover:border-white transition-colors relative overflow-hidden">
+              <div className="w-1.5 h-4 bg-gray-500 rounded-full mt-2 group-hover:bg-white transition-colors animate-bounce" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
+            </div>
+          </button>
+        </div>
       </section>
 
       {/* About Glimpse */}
       <ScrollAnimation>
-        <section id="about-section" className="py-20 px-4 border-t border-gray-800/50">
+        <section
+          id="about-section"
+          className="py-20 px-4 border-t border-gray-800/50"
+        >
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-light text-white gradient-text">about</h2>
-              <Link 
-                to="/about" 
+              <h2 className="text-4xl font-light text-white gradient-text">
+                about
+              </h2>
+              <Link
+                to="/about"
                 className="group flex items-center text-gray-400 hover:text-white text-sm transition-all duration-300 hover:scale-105"
               >
-                <span className="underline underline-offset-4">view all</span>
-                <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <span className="underline underline-offset-4">see more</span>
+                <svg
+                  className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
             </div>
-            
-            <div className="mb-16">
-              <p className="text-xl text-gray-300 leading-relaxed mb-6 font-light">
-                creative developer specializing in visual effects, music production, and web development. 
-                i love bringing digital ideas to life through code, sound, and motion.
-              </p>
-              <p className="text-lg text-gray-400 leading-relaxed font-light">
-                passionate about creating work that moves people through the intersection of technology, art, and sound.
-              </p>
-            </div>
 
-            {/* Enhanced Skills Grid */}
-            <div className="mb-12">
-              <h3 className="text-2xl text-white mb-8 font-light">what i do</h3>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {[
-                  { 
-                    title: "vfx & motion", 
-                    tools: ["after effects", "cinema 4d", "blender", "davinci resolve"], 
-                    color: "from-purple-500/20 to-pink-500/20",
-                    border: "border-purple-500/30"
-                  },
-                  { 
-                    title: "music production", 
-                    tools: ["ableton live", "logic pro", "serum", "kontakt"], 
-                    color: "from-blue-500/20 to-cyan-500/20",
-                    border: "border-blue-500/30"
-                  },
-                  { 
-                    title: "web development", 
-                    tools: ["react", "typescript", "tailwind", "node.js"], 
-                    color: "from-green-500/20 to-emerald-500/20",
-                    border: "border-green-500/30"
-                  },
-                  { 
-                    title: "ui/ux design", 
-                    tools: ["figma", "adobe xd", "principle", "framer"], 
-                    color: "from-orange-500/20 to-red-500/20",
-                    border: "border-orange-500/30"
-                  }
-                ].map((skill, index) => (
-                  <div 
-                    key={skill.title} 
-                    className={`glass rounded-xl p-8 hover-lift cursor-pointer relative overflow-hidden group transition-all duration-500 hover:scale-[1.02] ${skill.border} w-full`}
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${skill.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                    <div className="relative z-10">
-                      <div className="flex items-center mb-6">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300 ${
-                          skill.title === 'vfx & motion' 
-                            ? 'bg-purple-500/20 border border-purple-500/30' 
-                            : skill.title === 'music production'
-                            ? 'bg-blue-500/20 border border-blue-500/30'
-                            : skill.title === 'web development'
-                            ? 'bg-green-500/20 border border-green-500/30'
-                            : 'bg-orange-500/20 border border-orange-500/30'
-                        }`}>
-                          <span className={`w-3 h-3 rounded-full ${
-                            skill.title === 'vfx & motion' 
-                              ? 'bg-purple-400' 
-                              : skill.title === 'music production'
-                              ? 'bg-blue-400'
-                              : skill.title === 'web development'
-                              ? 'bg-green-400'
-                              : 'bg-orange-400'
-                          }`}></span>
-                        </div>
-                        <h4 className="text-xl text-white font-medium group-hover:text-white transition-colors">{skill.title}</h4>
+            <div className="mb-20">
+              <div className="grid md:grid-cols-2 gap-12 items-start">
+                {/* Personal intro */}
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-2xl text-white mb-4 font-light">
+                      all about me
+                    </h3>
+                    <div className="space-y-6">
+                      <p className="text-lg text-gray-300 leading-relaxed">
+                        heyo, i'm tame! i'm a 16 year old furry programmer, and
+                        musician living in
+                        chicago, illinois.
+                      </p>
+                      <p className="text-gray-400 leading-relaxed">
+                        {(() => {
+                          const now = new Date();
+                          const chicagoTime = new Date(
+                            now.toLocaleString("en-US", {
+                              timeZone: "America/Chicago",
+                            })
+                          );
+                          const hour = chicagoTime.getHours();
+                          const formattedTime = chicagoTime.toLocaleTimeString(
+                            "en-US",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          );
+                          // Sleep status: sleeping between 12am and 7am
+                          const status =
+                            hour >= 0 && hour < 7
+                              ? "i'm probably sleeping"
+                              : "i am likely awake";
+                          return `it is ${formattedTime} in Chicago, Illinois — ${status}`;
+                        })()}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Last.fm listening component */}
+                  <div className="mt-8 relative rounded-lg overflow-hidden border border-gray-800/50">
+                    {/* Blurred background cover art */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-700/30 to-gray-800/30 blur-sm"></div>
+                    <div className="absolute inset-0 bg-black/60"></div>
+                    
+                    <div className="relative p-6">
+                      <div className="mb-4">
+                        <h4 className="text-lg text-white font-light">currently listening</h4>
                       </div>
+                      
+                      <div className="flex items-center space-x-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-gray-700/50 to-gray-800/50 rounded-lg flex items-center justify-center border border-gray-600/30">
+                          <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                          </svg>
+                        </div>
+                        
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white font-medium truncate">loading track...</p>
+                          <p className="text-gray-300 text-sm truncate">fetching current song</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Skills preview */}
+                <div className="space-y-6">
+                  <h3 className="text-2xl text-white mb-4 font-light">
+                    things i do
+                  </h3>
+
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-lg text-gray-300 mb-2">
+                        vfx & motion
+                      </h4>
                       <div className="flex flex-wrap gap-2">
-                        {skill.tools.map((tool, toolIndex) => (
-                          <span 
-                            key={tool}
-                            className="text-sm bg-gray-800/50 text-gray-300 px-4 py-2 rounded-full border border-gray-700/50 group-hover:bg-gray-700/50 group-hover:text-white transition-all duration-300"
-                            style={{ animationDelay: `${toolIndex * 100}ms` }}
+                        {['after effects', 'cinema 4d', 'blender', 'davinci resolve'].map(
+                          (skill) => (
+                            <span
+                              key={skill}
+                              className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                            >
+                              {skill}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-lg text-gray-300 mb-2">
+                        music production
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {['ableton live', 'fl studio', 'serum', 'massive'].map((skill) => (
+                          <span
+                            key={skill}
+                            className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
                           >
-                            {tool}
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-lg text-gray-300 mb-2">
+                        web development
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {['html & css', 'javascript', 'react', 'tailwind', 'node.js'].map((skill) => (
+                          <span
+                            key={skill}
+                            className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-lg text-gray-300 mb-2">
+                        ui/ux design
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {['figma', 'adobe illustrator'].map((skill) => (
+                          <span
+                            key={skill}
+                            className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                          >
+                            {skill}
                           </span>
                         ))}
                       </div>
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
+          </div>
 
-            {/* Stats Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-              {[
-                { number: "5+", label: "years experience" },
-                { number: "50+", label: "projects completed" },
-                { number: "20+", label: "happy clients" },
-                { number: "∞", label: "creative ideas" }
-              ].map((stat) => (
-                <div key={stat.label} className="text-center group">
-                  <div className="text-3xl md:text-4xl font-light text-white mb-2 group-hover:scale-110 transition-transform duration-300">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                    {stat.label}
-                  </div>
+          <div>
+            <div className="flex items-center justify-center space-x-10">
+              <div className="group relative">
+                <a
+                  href="https://github.com/T-am3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                </a>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
+                  GitHub
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
                 </div>
-              ))}
+              </div>
+              <div className="group relative">
+                <a
+                  href="https://soundcloud.com/tam_3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3.5 17.5c-.4 0-.5-.1-.5-.5v-4.5c0-.4.1-.5.5-.5s.5.1.5.5v4.5c0 .4-.1.5-.5.5zm2-1c-.4 0-.5-.1-.5-.5v-3c0-.4.1-.5.5-.5s.5.1.5.5v3c0 .4-.1.5-.5.5zm2-1.5c-.4 0-.5-.1-.5-.5v-2c0-.4.1-.5.5-.5s.5.1.5.5v2c0 .4-.1.5-.5.5zm2-.5c-.4 0-.5-.1-.5-.5v-3c0-.4.1-.5.5-.5s.5.1.5.5v3c0 .4-.1.5-.5.5zm2 .5c-.4 0-.5-.1-.5-.5v-4c0-.4.1-.5.5-.5s.5.1.5.5v4c0 .4-.1.5-.5.5zm2 1c-.4 0-.5-.1-.5-.5v-6c0-.4.1-.5.5-.5s.5.1.5.5v6c0 .4-.1.5-.5.5zm2 1c-.4 0-.5-.1-.5-.5v-8c0-.4.1-.5.5-.5s.5.1.5.5v8c0 .4-.1.5-.5.5zm2-2c-.4 0-.5-.1-.5-.5v-4c0-.4.1-.5.5-.5s.5.1.5.5v4c0 .4-.1.5-.5.5z"/>
+                  </svg>
+                </a>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
+                  SoundCloud
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
+              <div className="group relative">
+                <a
+                  href="https://x.com/_tam3_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                </a>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
+                  Twitter
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
+
+              <div className="group relative">
+                <a
+                  href="https://youtube.com/@tam3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
+                  YouTube
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
+
+              <div className="group relative">
+                <a
+                  href="mailto:tame@tame.wtf"
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                >
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </a>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
+                  Email
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
+          </section>
       </ScrollAnimation>
 
       {/* Work Glimpse */}
@@ -252,62 +452,41 @@ export default function Home() {
         <section className="py-20 px-4 border-t border-gray-800/50">
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-light text-white gradient-text">recent work</h2>
-              <Link 
-                to="/work" 
+              <h2 className="text-4xl font-light text-white gradient-text">
+                recent projects
+              </h2>
+              <Link
+                to="/work"
                 className="group flex items-center text-gray-400 hover:text-white text-sm transition-all duration-300 hover:scale-105"
               >
-                <span className="underline underline-offset-4">view all</span>
-                <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <span className="underline underline-offset-4">see more</span>
+                <svg
+                  className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               {workItems.map((item) => (
                 <div key={item.id} className="group relative">
                   <div className="glass rounded-xl p-6 hover-lift cursor-pointer overflow-hidden relative border border-gray-800/50 hover:border-gray-600/50 transition-all duration-500 h-full">
                     {/* Category badge */}
-                    <div className={`absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
-                      item.category === 'vfx' 
-                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' 
-                        : item.category === 'music'
-                        ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                        : item.category === 'web'
-                        ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-                        : item.category === 'uiux'
-                        ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30'
-                        : 'bg-gray-500/20 text-gray-300 border border-gray-500/30'
-                    }`}>
+                    <div className="absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-gray-700/20 text-gray-300 border border-gray-600/30">
                       {item.category}
                     </div>
 
                     {/* Content Header */}
                     <div className="mb-4">
-                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 ${
-                        item.category === 'vfx' 
-                          ? 'bg-purple-500/20 border border-purple-500/30' 
-                          : item.category === 'music'
-                          ? 'bg-blue-500/20 border border-blue-500/30'
-                          : item.category === 'web'
-                          ? 'bg-green-500/20 border border-green-500/30'
-                          : item.category === 'uiux'
-                          ? 'bg-orange-500/20 border border-orange-500/30'
-                          : 'bg-gray-500/20 border border-gray-500/30'
-                      }`}>
-                        <span className={`w-3 h-3 rounded-full ${
-                          item.category === 'vfx' 
-                            ? 'bg-purple-400' 
-                            : item.category === 'music'
-                            ? 'bg-blue-400'
-                            : item.category === 'web'
-                            ? 'bg-green-400'
-                            : item.category === 'uiux'
-                            ? 'bg-orange-400'
-                            : 'bg-gray-400'
-                        }`}></span>
-                      </div>
                       <h3 className="text-xl font-light text-white mb-2 group-hover:text-gray-200 transition-colors">
                         {item.title}
                       </h3>
@@ -317,35 +496,40 @@ export default function Home() {
                     </div>
 
                     {/* Preview Area */}
-                    <div className={`relative h-32 rounded-lg overflow-hidden mb-4 group-hover:scale-[1.02] transition-transform duration-500 ${
-                      item.category === 'vfx' 
-                        ? 'bg-gradient-to-br from-purple-900/30 to-pink-900/30' 
-                        : item.category === 'music'
-                        ? 'bg-gradient-to-br from-blue-900/30 to-cyan-900/30'
-                        : item.category === 'web'
-                        ? 'bg-gradient-to-br from-green-900/30 to-emerald-900/30'
-                        : item.category === 'uiux'
-                        ? 'bg-gradient-to-br from-orange-900/30 to-red-900/30'
-                        : 'bg-gradient-to-br from-gray-900/30 to-gray-800/30'
-                    }`}>
+                    <div className="relative h-32 rounded-lg overflow-hidden mb-4 group-hover:scale-[1.02] transition-transform duration-500 bg-gradient-to-br from-gray-900/30 to-gray-800/30">
                       {/* Animated preview placeholder */}
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="flex items-center space-x-2 text-gray-400 group-hover:text-gray-300 transition-colors">
                           <span className="text-sm font-medium">preview</span>
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
                           </svg>
                         </div>
                       </div>
-                      
+
                       {/* Subtle animation overlay */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     </div>
 
                     {/* Project link */}
                     <div className="flex justify-end">
-                      <Link 
+                      <Link
                         to="/work"
                         className="text-xs text-gray-400 hover:text-white underline underline-offset-2 transition-colors"
                       >
@@ -362,45 +546,6 @@ export default function Home() {
           </div>
         </section>
       </ScrollAnimation>
-
-      {/* Contact Glimpse */}
-      <ScrollAnimation>
-        <section className="py-20 px-4 border-t border-gray-800/50">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-light text-white mb-8 gradient-text">let's connect</h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-              interested in collaborating on creative projects? let's make something amazing together.
-            </p>
-            
-            {/* Enhanced CTA section */}
-            <div className="mb-12">
-              <div className="flex flex-col sm:flex-row justify-center gap-6">
-                <a 
-                  href="mailto:hello@tame.wtf" 
-                  className="group inline-flex items-center px-8 py-4 bg-white text-black rounded-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 font-medium relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <span className="relative z-10 flex items-center">
-                    get in touch
-                    <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </span>
-                </a>
-                <Link 
-                  to="/contact" 
-                  className="group inline-flex items-center px-8 py-4 border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 hover:scale-105 hover:border-gray-500"
-                >
-                  more ways to connect
-                  <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </ScrollAnimation>
     </div>
-  )
+  );
 }
