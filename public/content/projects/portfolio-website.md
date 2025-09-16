@@ -1,8 +1,6 @@
 ---
 title: creative portfolio website
-category: web
 description: lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-tools: ["react", "typescript", "tailwind css", "vite"]
 year: 2024
 featured: true
 status: completed

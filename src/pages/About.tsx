@@ -303,7 +303,7 @@ export default function About() {
                   ].map((skill) => (
                     <span
                       key={skill}
-                      className="text-gray-500 text-xs bg-gray-900/50 rounded-full px-3 py-1"
+                      className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
                     >
                       {skill}
                     </span>
