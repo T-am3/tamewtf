@@ -2,28 +2,36 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import wavingHandWebp from "../assets/Waving Hand.webp";
 import { ScrollAnimation } from "../components/ScrollAnimation";
-import { getAllProjects, type Project } from "../utils/markdown";
+import { getAllProjects, getAllBlogPosts, type Project, type BlogPost } from "../utils/markdown";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [workItems, setWorkItems] = useState<Project[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
     setIsLoaded(true);
     
-    // Load projects from markdown files
-    const loadProjects = async () => {
+    // Load projects and blog posts
+    const loadContent = async () => {
       try {
-        const projects = await getAllProjects();
+        const [projects, posts] = await Promise.all([
+          getAllProjects(),
+          getAllBlogPosts()
+        ]);
         // Get featured projects and limit to 4
         const featured = projects.filter(p => p.featured).slice(0, 4);
         setWorkItems(featured);
+        
+        // Get recent blog posts and limit to 3
+        const recentPosts = posts.slice(0, 3);
+        setBlogPosts(recentPosts);
       } catch (error) {
-        console.error('Error loading projects:', error);
+        console.error('Error loading content:', error);
       }
     };
     
-    loadProjects();
+    loadContent();
   }, []);
 
   return (
@@ -477,32 +485,70 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {workItems.map((item) => (
-                <div key={item.id} className="group relative">
-                  <div className="glass rounded-xl p-6 hover-lift cursor-pointer overflow-hidden relative border border-gray-800/50 hover:border-gray-600/50 transition-all duration-500 h-full">
-                    {/* Category badge */}
-                    <div className="absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 bg-gray-700/20 text-gray-300 border border-gray-600/30">
-                      {item.category}
-                    </div>
+              {workItems.length === 0 ? (
+                <div className="col-span-full text-center py-16">
+                  <div className="w-16 h-16 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl text-white mb-2">no projects found</h3>
+                  <p className="text-gray-400">check back later for new projects</p>
+                </div>
+              ) : (
+                workItems.map((item) => (
+                  <div key={item.id} className="group relative">
+                    <Link
+                      to={`/work/${item.slug}`}
+                      className="block glass rounded-xl hover-lift transition-all duration-500 border border-gray-800/50 hover:border-gray-600/50 overflow-hidden"
+                    >
+                      {/* Project Image */}
+                      <div className="aspect-video bg-gray-900 relative overflow-hidden">
+                        {item.previewImage ? (
+                          <img
+                            src={item.previewImage}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
+                            <span className="text-gray-600 text-sm">
+                              preview
+                            </span>
+                          </div>
+                        )}
+                      </div>
 
-                    {/* Content Header */}
-                    <div className="mb-4">
-                      <h3 className="text-xl font-light text-white mb-2 group-hover:text-gray-200 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
-                        {item.description}
-                      </p>
-                    </div>
+                      {/* Project Content */}
+                      <div className="p-6">
+                        <h3 className="text-xl font-light text-white group-hover:text-gray-200 transition-colors mb-2">
+                          {item.title}
+                        </h3>
 
-                    {/* Preview Area */}
-                    <div className="relative h-32 rounded-lg overflow-hidden mb-4 group-hover:scale-[1.02] transition-transform duration-500 bg-gradient-to-br from-gray-900/30 to-gray-800/30">
-                      {/* Animated preview placeholder */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex items-center space-x-2 text-gray-400 group-hover:text-gray-300 transition-colors">
-                          <span className="text-sm font-medium">preview</span>
+                        {item.year && (
+                          <time className="text-gray-500 text-xs mb-3 block">
+                            {item.year}
+                          </time>
+                        )}
+
+                        <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors mb-4 line-clamp-3">
+                          {item.description}
+                        </p>
+
+                        <div className="flex items-center text-gray-400 group-hover:text-white transition-colors">
+                          <span className="text-sm">view project</span>
                           <svg
-                            className="w-4 h-4"
+                            className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -511,37 +557,114 @@ export default function Home() {
                               strokeLinecap="round"
                               strokeLinejoin="round"
                               strokeWidth={2}
-                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              d="M9 5l7 7-7 7"
                             />
                           </svg>
                         </div>
                       </div>
-
-                      {/* Subtle animation overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                    </div>
-
-                    {/* Project link */}
-                    <div className="flex justify-end">
-                      <Link
-                        to="/work"
-                        className="text-xs text-gray-400 hover:text-white underline underline-offset-2 transition-colors"
-                      >
-                        view project
-                      </Link>
-                    </div>
-
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r from-transparent via-white/[0.02] to-transparent"></div>
+                    </Link>
                   </div>
+                ))
+              )}
+            </div>
+          </div>
+        </section>
+      </ScrollAnimation>
+
+      {/* Blog Glimpse */}
+      <ScrollAnimation>
+        <section className="py-20 px-4 border-t border-gray-800/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex justify-between items-end mb-12">
+              <h2 className="text-4xl font-light text-white gradient-text">
+                recent blogs
+              </h2>
+              <Link
+                to="/blog"
+                className="group flex items-center text-gray-400 hover:text-white text-sm transition-all duration-300 hover:scale-105"
+              >
+                <span className="underline underline-offset-4">see more</span>
+                <svg
+                  className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Link>
+            </div>
+
+            <div className="space-y-8">
+              {blogPosts.length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="w-16 h-16 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl text-white mb-2">no posts found</h3>
+                  <p className="text-gray-400">check back later for new blog posts</p>
                 </div>
-              ))}
+              ) : (
+                blogPosts.map((post) => (
+                  <article key={post.id} className="group">
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      className="block glass rounded-xl hover-lift transition-all duration-500 border border-gray-800/50 hover:border-gray-600/50 overflow-hidden"
+                    >
+                      <div className="md:flex">
+                        {/* Blog Image */}
+                        {post.previewImage && (
+                          <div className="md:w-1/3 aspect-video md:aspect-square relative overflow-hidden">
+                            <img
+                              src={post.previewImage}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
+                        )}
+
+                        {/* Blog Content */}
+                        <div className={`p-8 ${post.previewImage ? 'md:w-2/3' : 'w-full'}`}>
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                            <div className="flex items-center space-x-4 mb-3 md:mb-0">
+                              <span className="text-gray-400 text-sm">{post.readTime}</span>
+                            </div>
+                            <time className="text-gray-400 text-sm">
+                              {new Date(post.date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </time>
+                          </div>
+
+                          <h3 className="text-2xl font-light text-white mb-3 group-hover:text-gray-200 transition-colors">
+                            {post.title}
+                          </h3>
+
+                          <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors mb-4">
+                            {post.excerpt}
+                          </p>
+
+                          <div className="flex items-center text-gray-400 group-hover:text-white transition-colors">
+                            <span className="text-sm">read more</span>
+                            <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </article>
+                ))
+              )}
             </div>
           </div>
         </section>
