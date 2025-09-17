@@ -25,8 +25,7 @@ export default function Blog() {
           setBlogPosts(posts)
           setAvailableTags(tags)
         }
-      } catch (error) {
-        console.error('Error loading blog posts:', error)
+      } catch {
         setError('Failed to load blog posts')
       } finally {
         setLoading(false)
@@ -55,11 +54,10 @@ export default function Blog() {
         {/* Header */}
         <ScrollAnimation>
           <div className="mb-20">
-            <h1 className="text-5xl md:text-6xl font-light text-white mb-8 gradient-text">blog</h1>
-            <div className="w-20 h-1 bg-gradient-to-r from-white to-gray-500 mb-8" />
+            <h1 className="text-5xl md:text-6xl font-light text-white mb-8">blog</h1>
+            <div className="w-20 h-1 bg-white to-gray-500 mb-8" />
             <p className="text-xl text-gray-300 leading-relaxed max-w-3xl">
-              thoughts, tutorials, and updates on my creative journey. 
-              sharing what i'm learning and working on.
+            my random ramblings, thoughts, and ideas
             </p>
           </div>
         </ScrollAnimation>
@@ -73,7 +71,7 @@ export default function Blog() {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedTag === "all"
                     ? 'bg-white text-black'
-                    : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                    : 'glass text-gray-300 hover:bg-gray-700/50 hover:text-white'
                 }`}
               >
                 everything
@@ -85,7 +83,7 @@ export default function Blog() {
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     selectedTag === tag
                       ? 'bg-white text-black'
-                      : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                      : 'glass text-gray-300 hover:bg-gray-700/50 hover:text-white'
                   }`}
                 >
                   {tag}
@@ -122,7 +120,7 @@ export default function Blog() {
             <div className="text-center py-12">
               <div className="glass rounded-xl p-8 border border-red-500/20">
                 <h3 className="text-xl text-white mb-4">oops, something went wrong</h3>
-                <p className="text-gray-400 mb-6">{error}</p>
+                <p className="text-gray-300 mb-6">{error}</p>
                 <button 
                   onClick={() => window.location.reload()} 
                   className="px-6 py-2 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors"
@@ -138,13 +136,13 @@ export default function Blog() {
         {!loading && !error && filteredPosts.length === 0 && blogPosts.length > 0 && (
           <ScrollAnimation delay={300}>
             <div className="text-center py-16">
-              <div className="w-16 h-16 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 mx-auto mb-6 glass rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                 </svg>
               </div>
               <h3 className="text-xl text-white mb-2">no posts found</h3>
-              <p className="text-gray-400">try selecting a different category</p>
+              <p className="text-gray-300">try selecting a different category</p>
             </div>
           </ScrollAnimation>
         )}
@@ -175,9 +173,9 @@ export default function Blog() {
                     <div className={`p-8 ${post.previewImage ? 'md:w-2/3' : 'w-full'}`}>
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                         <div className="flex items-center space-x-4 mb-3 md:mb-0">
-                          <span className="text-gray-400 text-sm">{post.readTime}</span>
+                          <span className="text-gray-300 text-sm">{post.readTime}</span>
                         </div>
-                        <time className="text-gray-400 text-sm">
+                        <time className="text-gray-300 text-sm">
                           {formatDate(post.date)}
                         </time>
                       </div>
@@ -186,11 +184,11 @@ export default function Blog() {
                         {post.title}
                       </h2>
                       
-                      <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors mb-4">
+                      <p className="text-gray-300 leading-relaxed group-hover:text-gray-300 transition-colors mb-4">
                         {post.excerpt}
                       </p>
                       
-                      <div className="flex items-center text-gray-400 group-hover:text-white transition-colors">
+                      <div className="flex items-center text-gray-300 group-hover:text-white transition-colors">
                         <span className="text-sm">read more</span>
                         <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

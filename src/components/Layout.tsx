@@ -25,9 +25,8 @@ export default function Layout() {
 
   const navLinks = [
     { path: "/about", label: "about" },
-    { path: "/work", label: "projects" },
+    { path: "/projects", label: "projects" },
     { path: "/blog", label: "blog" },
-    { path: "/contact", label: "contact" },
   ];
 
   return (
@@ -49,7 +48,7 @@ export default function Layout() {
             {/* Logo */}
             <Link
               to="/"
-              className="text-xl text-white hover:text-gray-300 transition-colors font-bold tracking-tight"
+              className="text-xl text-white  transition-colors font-bold tracking-tight"
             >
               tame.wtf
             </Link>
@@ -63,7 +62,7 @@ export default function Layout() {
                   className={`relative px-4 py-2 rounded-lg transition-all duration-300 font-medium ${
                     location.pathname === path
                       ? "text-white bg-white/10"
-                      : "text-gray-300 hover:text-white hover:bg-white/5"
+                      : "text-white hover:text-gray-200 hover:bg-white/5"
                   }`}
                 >
                   {label}
@@ -173,80 +172,62 @@ export default function Layout() {
       {/* Footer */}
       <footer className="border-t border-gray-800 py-12 px-4 mt-20">
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div>
               <h3 className="text-white font-medium mb-4">connect</h3>
               <div className="space-y-2">
                 <a
-                  href="mailto:hello@tame.wtf"
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
+                  href="mailto:tame@tame.wtf"
+                  className="block text-gray-300 hover:text-white transition-colors text-sm"
                 >
-                  hello@tame.wtf
+                  tame@tame.wtf
                 </a>
               </div>
             </div>
             <div>
               <h3 className="text-white font-medium mb-4">quick links</h3>
               <div className="space-y-2">
-                <Link
-                  to="/work"
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
-                >
-                  projects
-                </Link>
-                <Link
-                  to="/blog"
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
-                >
-                  blog
-                </Link>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-white font-medium mb-4">site</h3>
-              <div className="space-y-2">
-                <Link
-                  to="/about"
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
-                >
-                  about
-                </Link>
-                <Link
-                  to="/contact"
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
-                >
-                  contact
-                </Link>
+                {navLinks.map(({ path, label }) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    className="block text-gray-300 hover:text-white transition-colors text-sm"
+                  >
+                    {label}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-4 md:mb-0">
-              <p className="text-gray-500 text-sm">© 2025 tame.</p>
+              <p className="text-gray-300 text-sm">
+              © {new Date().getFullYear()} tame
+              </p>
               <div className="flex items-center space-x-2 mt-1 md:mt-0">
-                <span className="text-gray-600 text-xs">build</span>
-                <code className="bg-gray-800/50 text-gray-400 px-2 py-1 rounded text-xs font-mono border border-gray-700/50 hover:border-gray-600/50 transition-colors">
-                  {__GIT_HASH__}
-                </code>
+              <span className="text-gray-500 text-xs">build</span>
+              <code className="glass text-gray-300 px-2 py-1 rounded text-xs border border-gray-700/50 hover:border-gray-600/50 transition-colors">
+                {__GIT_HASH__}
+              </code>
               </div>
             </div>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-gray-500 hover:text-gray-300 transition-colors"
+                className="text-gray-300  transition-colors"
               >
-                <span className="sr-only">Twitter</span>
+                <span className="sr-only">X</span>
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
               </a>
               <a
                 href="#"
-                className="text-gray-500 hover:text-gray-300 transition-colors"
+                className="text-gray-300  transition-colors"
               >
                 <span className="sr-only">GitHub</span>
                 <svg

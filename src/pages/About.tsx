@@ -13,10 +13,11 @@ export default function About() {
       <div className="max-w-4xl mx-auto">
         <ScrollAnimation>
           <div className="mb-20">
-            <h1 className="text-5xl md:text-6xl font-light text-white mb-8 gradient-text">
+            <h1 className="text-5xl md:text-6xl font-light text-white mb-8">
               about
             </h1>
-            <div className="w-20 h-1 bg-gradient-to-r from-white to-gray-500 mb-12" />
+            
+            <div className="w-20 h-1 bg-white mb-12" />
           </div>
         </ScrollAnimation>
 
@@ -30,7 +31,7 @@ export default function About() {
                     heyo, i'm tame! i'm a 16 year old furry programmer, and
                     musician living in chicago, illinois.
                   </p>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-300 leading-relaxed">
                     {(() => {
                       const now = new Date();
                       const chicagoTime = new Date(
@@ -65,14 +66,14 @@ export default function About() {
                   <div className="relative p-6">
                     <div className="mb-4">
                       <h4 className="text-lg text-white font-light">
-                        currently listening
+                        last listened to
                       </h4>
                     </div>
 
                     <div className="flex items-center space-x-4">
                       <div className="w-16 h-16 bg-gradient-to-br from-gray-700/50 to-gray-800/50 rounded-lg flex items-center justify-center border border-gray-600/30">
                         <svg
-                          className="w-8 h-8 text-gray-400"
+                          className="w-8 h-8 text-gray-300"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -106,7 +107,7 @@ export default function About() {
                       {skills.vfx.map((tool) => (
                         <span
                           key={tool}
-                          className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                          className="text-gray-300 text-sm glass rounded px-3 py-1"
                         >
                           {tool}
                         </span>
@@ -122,7 +123,7 @@ export default function About() {
                       {skills.music.map((tool) => (
                         <span
                           key={tool}
-                          className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                          className="text-gray-300 text-sm glass rounded px-3 py-1"
                         >
                           {tool}
                         </span>
@@ -138,7 +139,7 @@ export default function About() {
                       {skills.web.map((tool) => (
                         <span
                           key={tool}
-                          className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                          className="text-gray-300 text-sm glass rounded px-3 py-1"
                         >
                           {tool}
                         </span>
@@ -152,7 +153,7 @@ export default function About() {
                       {skills.uiux.map((tool) => (
                         <span
                           key={tool}
-                          className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                          className="text-gray-300 text-sm glass rounded px-3 py-1"
                         >
                           {tool}
                         </span>
@@ -173,7 +174,7 @@ export default function About() {
                   href="https://github.com/T-am3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
                     className="w-8 h-8"
@@ -194,14 +195,14 @@ export default function About() {
                   href="https://soundcloud.com/tam_3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
                     className="w-8 h-8"
                     fill="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox="0 208.952 1048.713 581.696"
                   >
-                    <path d="M3.5 17.5c-.4 0-.5-.1-.5-.5v-4.5c0-.4.1-.5.5-.5s.5.1.5.5v4.5c0 .4-.1.5-.5.5zm2-1c-.4 0-.5-.1-.5-.5v-3c0-.4.1-.5.5-.5s.5.1.5.5v3c0 .4-.1.5-.5.5zm2-1.5c-.4 0-.5-.1-.5-.5v-2c0-.4.1-.5.5-.5s.5.1.5.5v2c0 .4-.1.5-.5.5zm2-.5c-.4 0-.5-.1-.5-.5v-3c0-.4.1-.5.5-.5s.5.1.5.5v3c0 .4-.1.5-.5.5zm2 .5c-.4 0-.5-.1-.5-.5v-4c0-.4.1-.5.5-.5s.5.1.5.5v4c0 .4-.1.5-.5.5zm2 1c-.4 0-.5-.1-.5-.5v-6c0-.4.1-.5.5-.5s.5.1.5.5v6c0 .4-.1.5-.5.5zm2 1c-.4 0-.5-.1-.5-.5v-8c0-.4.1-.5.5-.5s.5.1.5.5v8c0 .4-.1.5-.5.5zm2-2c-.4 0-.5-.1-.5-.5v-4c0-.4.1-.5.5-.5s.5.1.5.5v4c0 .4-.1.5-.5.5z" />
+                    <path d="M0 686.216c0 13.014 4.718 22.854 14.152 29.524 9.435 6.669 19.52 9.027 30.256 7.076 10.085-1.952 17.161-5.531 21.229-10.736 4.066-5.205 6.1-13.827 6.1-25.864v-141.52c0-10.086-3.497-18.626-10.492-25.62-6.994-6.995-15.534-10.492-25.62-10.492-9.76 0-18.137 3.497-25.132 10.492C3.498 526.07 0 534.61 0 544.696v141.52zm112.24 60.512c0 9.436 3.335 16.511 10.004 21.229 6.67 4.718 15.21 7.076 25.62 7.076 10.736 0 19.438-2.359 26.108-7.076 6.669-4.717 10.004-11.793 10.004-21.229V416.84c0-9.76-3.498-18.138-10.492-25.132-6.995-6.994-15.535-10.492-25.62-10.492-9.76 0-18.138 3.498-25.132 10.492-6.995 6.995-10.492 15.372-10.492 25.132v329.888zm111.752 15.616c0 9.435 3.416 16.511 10.248 21.229 6.832 4.717 15.616 7.076 26.353 7.076 10.41 0 18.95-2.359 25.619-7.076 6.67-4.718 10.005-11.794 10.005-21.229V461.248c0-10.085-3.498-18.707-10.492-25.864-6.995-7.157-15.372-10.735-25.132-10.735-10.086 0-18.707 3.578-25.864 10.735s-10.736 15.779-10.736 25.864v301.096zm112.24 1.464c0 17.894 12.037 26.841 36.112 26.841 24.074 0 36.111-8.947 36.111-26.841v-488c0-27.328-8.296-42.781-24.888-46.36-10.736-2.603-21.31.488-31.72 9.272-10.411 8.784-15.616 21.146-15.616 37.088v488zm114.193 14.152V247.016c0-16.917 5.042-27.002 15.128-30.256 21.797-5.205 43.432-7.808 64.904-7.808 49.775 0 96.136 11.712 139.079 35.136 42.944 23.424 77.674 55.388 104.188 95.892 26.515 40.505 41.887 85.156 46.116 133.957 19.845-8.459 40.991-12.688 63.439-12.688 45.547 0 84.506 16.104 116.876 48.312 32.371 32.209 48.557 70.923 48.557 116.145 0 45.547-16.186 84.424-48.557 116.632-32.37 32.208-71.166 48.312-116.388 48.312l-424.56-.488c-2.929-.976-5.125-2.766-6.589-5.368s-2.193-4.882-2.193-6.834z"/>
                   </svg>
                 </a>
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
@@ -215,18 +216,18 @@ export default function About() {
                   href="https://x.com/_Tam3_"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
                     className="w-8 h-8"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
-                  Twitter
+                  X
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
                 </div>
               </div>
@@ -236,7 +237,7 @@ export default function About() {
                   href="https://youtube.com/@tam3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
                     className="w-8 h-8"
@@ -254,8 +255,30 @@ export default function About() {
 
               <div className="group relative">
                 <a
+                  href="https://www.roblox.com/users/123456789/profile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                >
+                  <svg
+                    className="w-8 h-8"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12.024 10.882c-1.162 0-2.1.936-2.1 2.093 0 1.157.938 2.093 2.1 2.093s2.1-.936 2.1-2.093c0-1.157-.938-2.093-2.1-2.093zm0 3.345c-.645 0-1.168-.52-1.168-1.16 0-.64.523-1.16 1.168-1.16.645 0 1.168.52 1.168 1.16 0 .64-.523 1.16-1.168 1.16z"/>
+                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm5.584 13.03c-.18.42-.504.756-.918.918-.414.162-.864.126-1.242-.096-.378-.222-.648-.588-.756-.996-.108-.408-.036-.84.198-1.194.234-.354.624-.576 1.044-.576h.036c.468 0 .918.252 1.152.666.234.414.216.936-.054 1.332-.27.396-.72.612-1.152.612-.216 0-.432-.054-.612-.162-.18-.108-.324-.27-.414-.468-.09-.198-.126-.414-.126-.63 0-.72.576-1.296 1.296-1.296.36 0 .702.144.954.396.252.252.396.594.396.954 0 .252-.054.504-.162.72z"/>
+                  </svg>
+                </a>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
+                  Roblox
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
+
+              <div className="group relative">
+                <a
                   href="mailto:tame@tame.wtf"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
                     className="w-8 h-8"
@@ -287,9 +310,9 @@ export default function About() {
               <div className="glass rounded-lg p-8 hover-lift">
                 <div className="flex justify-between items-start mb-3">
                   <h4 className="text-lg text-white">RoPro Extension</h4>
-                  <span className="text-gray-400 text-sm">2023 - present</span>
+                  <span className="text-gray-300 text-sm">2023 - present</span>
                 </div>
-                <p className="text-gray-400 mb-4">
+                <p className="text-gray-300 mb-4">
                   a browser extension for roblox that adds tons of new features
                   to the website. building assets for the extension, as well as
                   managing the website and social media.
@@ -303,7 +326,7 @@ export default function About() {
                   ].map((skill) => (
                     <span
                       key={skill}
-                      className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                      className="text-gray-300 text-sm glass rounded px-3 py-1"
                     >
                       {skill}
                     </span>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import wavingHandWebp from "../assets/Waving Hand.webp";
 import { ScrollAnimation } from "../components/ScrollAnimation";
 import { getAllProjects, getAllBlogPosts, type Project, type BlogPost } from "../utils/markdown";
@@ -8,31 +8,48 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [workItems, setWorkItems] = useState<Project[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Memoize floating particles to prevent regeneration on every render
+  const floatingParticles = useMemo(() => {
+    return [...Array(80)].map((_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      size: 2 + Math.random() * 4,
+      opacity: 0.02 + Math.random() * 0.08,
+      delay: Math.random() * 3,
+      duration: 3 + Math.random() * 4,
+    }));
+  }, []);
+
+  const loadContent = useCallback(async () => {
+    try {
+      setError(null);
+      const [projects, posts] = await Promise.all([
+        getAllProjects(),
+        getAllBlogPosts()
+      ]);
+      // Get featured projects and limit to 4
+      const featured = projects.filter(p => p.featured).slice(0, 4);
+      setWorkItems(featured);
+
+      // Get recent blog posts and limit to 3
+      const recentPosts = posts.slice(0, 3);
+      setBlogPosts(recentPosts);
+    } catch (err) {
+      console.error('Error loading content:', err);
+      setError('Failed to load content. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     setIsLoaded(true);
-    
-    // Load projects and blog posts
-    const loadContent = async () => {
-      try {
-        const [projects, posts] = await Promise.all([
-          getAllProjects(),
-          getAllBlogPosts()
-        ]);
-        // Get featured projects and limit to 4
-        const featured = projects.filter(p => p.featured).slice(0, 4);
-        setWorkItems(featured);
-        
-        // Get recent blog posts and limit to 3
-        const recentPosts = posts.slice(0, 3);
-        setBlogPosts(recentPosts);
-      } catch (error) {
-        console.error('Error loading content:', error);
-      }
-    };
-    
     loadContent();
-  }, []);
+  }, [loadContent]);
 
   return (
     <div className="w-full relative">
@@ -41,20 +58,18 @@ export default function Home() {
         {/* Enhanced animated background */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Floating particles */}
-          {[...Array(80)].map((_, i) => (
+          {floatingParticles.map((particle) => (
             <div
-              key={i}
+              key={particle.id}
               className="absolute rounded-full animate-pulse"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                width: `${2 + Math.random() * 4}px`,
-                height: `${2 + Math.random() * 4}px`,
-                backgroundColor: `rgba(255, 255, 255, ${
-                  0.02 + Math.random() * 0.08
-                })`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${3 + Math.random() * 4}s`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                backgroundColor: `rgba(255, 255, 255, ${particle.opacity})`,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`,
               }}
             />
           ))}
@@ -138,7 +153,7 @@ export default function Home() {
               }`}
             >
               <Link
-                to="/work"
+                to="/projects"
                 className="inline-flex items-center px-8 py-4 bg-white text-black rounded-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 pulse-glow font-medium"
               >
                 check out my stuff
@@ -156,19 +171,13 @@ export default function Home() {
                   />
                 </svg>
               </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center px-8 py-4 border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 hover:scale-105"
-              >
-                contact me
-              </Link>
             </div>
           </div>
         </div>
 
         {/* Enhanced scroll indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-          <div className="text-gray-500 text-sm mb-4 animate-pulse">
+          <div className="text-gray-300 text-sm mb-4 animate-pulse">
             scroll to explore
           </div>
           <button
@@ -197,12 +206,12 @@ export default function Home() {
         >
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-light text-white gradient-text">
+              <h2 className="text-4xl font-light text-white">
                 about
               </h2>
               <Link
                 to="/about"
-                className="group flex items-center text-gray-400 hover:text-white text-sm transition-all duration-300 hover:scale-105"
+                className="group flex items-center text-gray-300 hover:text-white text-sm transition-all duration-300 hover:scale-105"
               >
                 <span className="underline underline-offset-4">see more</span>
                 <svg
@@ -235,7 +244,7 @@ export default function Home() {
                         musician living in
                         chicago, illinois.
                       </p>
-                      <p className="text-gray-400 leading-relaxed">
+                      <p className="text-gray-300 leading-relaxed">
                         {(() => {
                           const now = new Date();
                           const chicagoTime = new Date(
@@ -270,12 +279,12 @@ export default function Home() {
                     
                     <div className="relative p-6">
                       <div className="mb-4">
-                        <h4 className="text-lg text-white font-light">currently listening</h4>
+                        <h4 className="text-lg text-white font-light">last listened to</h4>
                       </div>
                       
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-gray-700/50 to-gray-800/50 rounded-lg flex items-center justify-center border border-gray-600/30">
-                          <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-8 h-8 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                           </svg>
                         </div>
@@ -306,7 +315,7 @@ export default function Home() {
                           (skill) => (
                             <span
                               key={skill}
-                              className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                              className="text-gray-300 text-sm glass rounded px-3 py-1"
                             >
                               {skill}
                             </span>
@@ -323,7 +332,7 @@ export default function Home() {
                         {['ableton live', 'fl studio', 'serum', 'massive'].map((skill) => (
                           <span
                             key={skill}
-                            className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                            className="text-gray-300 text-sm glass rounded px-3 py-1"
                           >
                             {skill}
                           </span>
@@ -339,7 +348,7 @@ export default function Home() {
                         {['html & css', 'javascript', 'react', 'tailwind', 'node.js'].map((skill) => (
                           <span
                             key={skill}
-                            className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                            className="text-gray-300 text-sm glass rounded px-3 py-1"
                           >
                             {skill}
                           </span>
@@ -355,7 +364,7 @@ export default function Home() {
                         {['figma', 'adobe illustrator'].map((skill) => (
                           <span
                             key={skill}
-                            className="text-gray-400 text-sm bg-gray-800/30 rounded px-3 py-1"
+                            className="text-gray-300 text-sm glass rounded px-3 py-1"
                           >
                             {skill}
                           </span>
@@ -375,7 +384,7 @@ export default function Home() {
                   href="https://github.com/T-am3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
@@ -391,10 +400,10 @@ export default function Home() {
                   href="https://soundcloud.com/tam_3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3.5 17.5c-.4 0-.5-.1-.5-.5v-4.5c0-.4.1-.5.5-.5s.5.1.5.5v4.5c0 .4-.1.5-.5.5zm2-1c-.4 0-.5-.1-.5-.5v-3c0-.4.1-.5.5-.5s.5.1.5.5v3c0 .4-.1.5-.5.5zm2-1.5c-.4 0-.5-.1-.5-.5v-2c0-.4.1-.5.5-.5s.5.1.5.5v2c0 .4-.1.5-.5.5zm2-.5c-.4 0-.5-.1-.5-.5v-3c0-.4.1-.5.5-.5s.5.1.5.5v3c0 .4-.1.5-.5.5zm2 .5c-.4 0-.5-.1-.5-.5v-4c0-.4.1-.5.5-.5s.5.1.5.5v4c0 .4-.1.5-.5.5zm2 1c-.4 0-.5-.1-.5-.5v-6c0-.4.1-.5.5-.5s.5.1.5.5v6c0 .4-.1.5-.5.5zm2 1c-.4 0-.5-.1-.5-.5v-8c0-.4.1-.5.5-.5s.5.1.5.5v8c0 .4-.1.5-.5.5zm2-2c-.4 0-.5-.1-.5-.5v-4c0-.4.1-.5.5-.5s.5.1.5.5v4c0 .4-.1.5-.5.5z"/>
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 208.952 1048.713 581.696">
+                    <path d="M0 686.216c0 13.014 4.718 22.854 14.152 29.524 9.435 6.669 19.52 9.027 30.256 7.076 10.085-1.952 17.161-5.531 21.229-10.736 4.066-5.205 6.1-13.827 6.1-25.864v-141.52c0-10.086-3.497-18.626-10.492-25.62-6.994-6.995-15.534-10.492-25.62-10.492-9.76 0-18.137 3.497-25.132 10.492C3.498 526.07 0 534.61 0 544.696v141.52zm112.24 60.512c0 9.436 3.335 16.511 10.004 21.229 6.67 4.718 15.21 7.076 25.62 7.076 10.736 0 19.438-2.359 26.108-7.076 6.669-4.717 10.004-11.793 10.004-21.229V416.84c0-9.76-3.498-18.138-10.492-25.132-6.995-6.994-15.535-10.492-25.62-10.492-9.76 0-18.138 3.498-25.132 10.492-6.995 6.995-10.492 15.372-10.492 25.132v329.888zm111.752 15.616c0 9.435 3.416 16.511 10.248 21.229 6.832 4.717 15.616 7.076 26.353 7.076 10.41 0 18.95-2.359 25.619-7.076 6.67-4.718 10.005-11.794 10.005-21.229V461.248c0-10.085-3.498-18.707-10.492-25.864-6.995-7.157-15.372-10.735-25.132-10.735-10.086 0-18.707 3.578-25.864 10.735s-10.736 15.779-10.736 25.864v301.096zm112.24 1.464c0 17.894 12.037 26.841 36.112 26.841 24.074 0 36.111-8.947 36.111-26.841v-488c0-27.328-8.296-42.781-24.888-46.36-10.736-2.603-21.31.488-31.72 9.272-10.411 8.784-15.616 21.146-15.616 37.088v488zm114.193 14.152V247.016c0-16.917 5.042-27.002 15.128-30.256 21.797-5.205 43.432-7.808 64.904-7.808 49.775 0 96.136 11.712 139.079 35.136 42.944 23.424 77.674 55.388 104.188 95.892 26.515 40.505 41.887 85.156 46.116 133.957 19.845-8.459 40.991-12.688 63.439-12.688 45.547 0 84.506 16.104 116.876 48.312 32.371 32.209 48.557 70.923 48.557 116.145 0 45.547-16.186 84.424-48.557 116.632-32.37 32.208-71.166 48.312-116.388 48.312l-424.56-.488c-2.929-.976-5.125-2.766-6.589-5.368s-2.193-4.882-2.193-6.834z"/>
                   </svg>
                 </a>
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
@@ -407,14 +416,14 @@ export default function Home() {
                   href="https://x.com/_tam3_"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
-                  Twitter
+                  X
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
                 </div>
               </div>
@@ -424,7 +433,7 @@ export default function Home() {
                   href="https://youtube.com/@tam3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
@@ -438,8 +447,26 @@ export default function Home() {
 
               <div className="group relative">
                 <a
+                  href="https://www.roblox.com/users/123456789/profile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.024 10.882c-1.162 0-2.1.936-2.1 2.093 0 1.157.938 2.093 2.1 2.093s2.1-.936 2.1-2.093c0-1.157-.938-2.093-2.1-2.093zm0 3.345c-.645 0-1.168-.52-1.168-1.16 0-.64.523-1.16 1.168-1.16.645 0 1.168.52 1.168 1.16 0 .64-.523 1.16-1.168 1.16z"/>
+                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm5.584 13.03c-.18.42-.504.756-.918.918-.414.162-.864.126-1.242-.096-.378-.222-.648-.588-.756-.996-.108-.408-.036-.84.198-1.194.234-.354.624-.576 1.044-.576h.036c.468 0 .918.252 1.152.666.234.414.216.936-.054 1.332-.27.396-.72.612-1.152.612-.216 0-.432-.054-.612-.162-.18-.108-.324-.27-.414-.468-.09-.198-.126-.414-.126-.63 0-.72.576-1.296 1.296-1.296.36 0 .702.144.954.396.252.252.396.594.396.954 0 .252-.054.504-.162.72z"/>
+                  </svg>
+                </a>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
+                  Roblox
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
+
+              <div className="group relative">
+                <a
                   href="mailto:tame@tame.wtf"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -460,12 +487,12 @@ export default function Home() {
         <section className="py-20 px-4 border-t border-gray-800/50">
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-light text-white gradient-text">
+              <h2 className="text-4xl font-light text-white">
                 recent projects
               </h2>
               <Link
-                to="/work"
-                className="group flex items-center text-gray-400 hover:text-white text-sm transition-all duration-300 hover:scale-105"
+                to="/projects"
+                className="group flex items-center text-gray-300 hover:text-white text-sm transition-all duration-300 hover:scale-105"
               >
                 <span className="underline underline-offset-4">see more</span>
                 <svg
@@ -485,11 +512,49 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {workItems.length === 0 ? (
+              {isLoading ? (
+                // Loading skeleton for projects
+                [...Array(4)].map((_, i) => (
+                  <div key={i} className="glass rounded-xl border border-gray-800/50 overflow-hidden animate-pulse">
+                    <div className="aspect-video bg-gray-800"></div>
+                    <div className="p-6">
+                      <div className="h-6 bg-gray-700 rounded mb-3"></div>
+                      <div className="h-4 bg-gray-700 rounded mb-2"></div>
+                      <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+                    </div>
+                  </div>
+                ))
+              ) : error ? (
                 <div className="col-span-full text-center py-16">
-                  <div className="w-16 h-16 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 mx-auto mb-6 glass rounded-full flex items-center justify-center">
                     <svg
-                      className="w-8 h-8 text-gray-400"
+                      className="w-8 h-8 text-red-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl text-white mb-2">failed to load projects</h3>
+                  <p className="text-gray-300 mb-4">{error}</p>
+                  <button
+                    onClick={loadContent}
+                    className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    try again
+                  </button>
+                </div>
+              ) : workItems.length === 0 ? (
+                <div className="col-span-full text-center py-16">
+                  <div className="w-16 h-16 mx-auto mb-6 glass rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-gray-300"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -503,13 +568,13 @@ export default function Home() {
                     </svg>
                   </div>
                   <h3 className="text-xl text-white mb-2">no projects found</h3>
-                  <p className="text-gray-400">check back later for new projects</p>
+                  <p className="text-gray-300">check back later for new projects</p>
                 </div>
               ) : (
                 workItems.map((item) => (
                   <div key={item.id} className="group relative">
                     <Link
-                      to={`/work/${item.slug}`}
+                      to={`/projects/${item.slug}`}
                       className="block glass rounded-xl hover-lift transition-all duration-500 border border-gray-800/50 hover:border-gray-600/50 overflow-hidden"
                     >
                       {/* Project Image */}
@@ -522,7 +587,7 @@ export default function Home() {
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-                            <span className="text-gray-600 text-sm">
+                            <span className="text-gray-500 text-sm">
                               preview
                             </span>
                           </div>
@@ -536,16 +601,16 @@ export default function Home() {
                         </h3>
 
                         {item.year && (
-                          <time className="text-gray-500 text-xs mb-3 block">
+                          <time className="text-gray-300 text-xs mb-3 block">
                             {item.year}
                           </time>
                         )}
 
-                        <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors mb-4 line-clamp-3">
+                        <p className="text-gray-300 text-sm leading-relaxed group-hover:text-gray-300 transition-colors mb-4 line-clamp-3">
                           {item.description}
                         </p>
 
-                        <div className="flex items-center text-gray-400 group-hover:text-white transition-colors">
+                        <div className="flex items-center text-gray-300 group-hover:text-white transition-colors">
                           <span className="text-sm">view project</span>
                           <svg
                             className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
@@ -576,12 +641,12 @@ export default function Home() {
         <section className="py-20 px-4 border-t border-gray-800/50">
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-light text-white gradient-text">
+              <h2 className="text-4xl font-light text-white">
                 recent blogs
               </h2>
               <Link
                 to="/blog"
-                className="group flex items-center text-gray-400 hover:text-white text-sm transition-all duration-300 hover:scale-105"
+                className="group flex items-center text-gray-300 hover:text-white text-sm transition-all duration-300 hover:scale-105"
               >
                 <span className="underline underline-offset-4">see more</span>
                 <svg
@@ -601,15 +666,59 @@ export default function Home() {
             </div>
 
             <div className="space-y-8">
-              {blogPosts.length === 0 ? (
+              {isLoading ? (
+                // Loading skeleton for blog posts
+                [...Array(3)].map((_, i) => (
+                  <div key={i} className="glass rounded-xl border border-gray-800/50 overflow-hidden animate-pulse">
+                    <div className="md:flex">
+                      <div className="md:w-1/3 aspect-video md:aspect-square bg-gray-800"></div>
+                      <div className="md:w-2/3 p-6">
+                        <div className="h-6 bg-gray-700 rounded mb-3"></div>
+                        <div className="h-4 bg-gray-700 rounded mb-2"></div>
+                        <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
+                        <div className="flex items-center space-x-4">
+                          <div className="h-4 bg-gray-700 rounded w-20"></div>
+                          <div className="h-4 bg-gray-700 rounded w-16"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : error ? (
                 <div className="text-center py-16">
-                  <div className="w-16 h-16 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 mx-auto mb-6 glass rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-red-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl text-white mb-2">failed to load blog posts</h3>
+                  <p className="text-gray-300 mb-4">{error}</p>
+                  <button
+                    onClick={loadContent}
+                    className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    try again
+                  </button>
+                </div>
+              ) : blogPosts.length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="w-16 h-16 mx-auto mb-6 glass rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                     </svg>
                   </div>
                   <h3 className="text-xl text-white mb-2">no posts found</h3>
-                  <p className="text-gray-400">check back later for new blog posts</p>
+                  <p className="text-gray-300">check back later for new blog posts</p>
                 </div>
               ) : (
                 blogPosts.map((post) => (
@@ -634,9 +743,9 @@ export default function Home() {
                         <div className={`p-8 ${post.previewImage ? 'md:w-2/3' : 'w-full'}`}>
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                             <div className="flex items-center space-x-4 mb-3 md:mb-0">
-                              <span className="text-gray-400 text-sm">{post.readTime}</span>
+                              <span className="text-gray-300 text-sm">{post.readTime}</span>
                             </div>
-                            <time className="text-gray-400 text-sm">
+                            <time className="text-gray-300 text-sm">
                               {new Date(post.date).toLocaleDateString('en-US', {
                                 year: 'numeric',
                                 month: 'long',
@@ -649,11 +758,11 @@ export default function Home() {
                             {post.title}
                           </h3>
 
-                          <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors mb-4">
+                          <p className="text-gray-300 leading-relaxed group-hover:text-gray-300 transition-colors mb-4">
                             {post.excerpt}
                           </p>
 
-                          <div className="flex items-center text-gray-400 group-hover:text-white transition-colors">
+                          <div className="flex items-center text-gray-300 group-hover:text-white transition-colors">
                             <span className="text-sm">read more</span>
                             <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

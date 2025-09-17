@@ -18,5 +18,25 @@ export default defineConfig({
   base: '/', // Since you have a custom domain (tame.wtf), use root path
   define: {
     __GIT_HASH__: JSON.stringify(getGitHash())
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks for better caching
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // Custom utilities
+          'utils': ['./src/utils/markdown.ts']
+        }
+      }
+    },
+    // Enable source maps for production debugging
+    sourcemap: true,
+    // Optimize chunk size
+    chunkSizeWarningLimit: 1000
+  },
+  // Preload modules for better performance
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom']
   }
 })

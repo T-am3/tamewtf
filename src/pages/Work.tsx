@@ -29,8 +29,7 @@ export default function Work() {
           setProjects(projectsData);
           setAvailableTags(tags);
         }
-      } catch (error) {
-        console.error("Error loading projects:", error);
+      } catch {
         setError("Failed to load projects");
       } finally {
         setLoading(false);
@@ -56,7 +55,7 @@ export default function Work() {
             <h1 className="text-5xl md:text-6xl font-light text-white mb-8 gradient-text">
               projects
             </h1>
-            <div className="w-20 h-1 bg-gradient-to-r from-white to-gray-500 mb-8" />
+            <div className="w-20 h-1 bg-white mb-8" />
             <p className="text-xl text-gray-300 leading-relaxed max-w-3xl">
               a collection of random experiments, side projects, and creative
               ideas i've been working on. some work, some don't, but all were
@@ -75,7 +74,7 @@ export default function Work() {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedTag === "all"
                     ? "bg-white text-black"
-                    : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white"
+                    : "glass text-gray-300 hover:bg-gray-700/50 hover:text-white"
                 }`}
               >
                 everything
@@ -87,7 +86,7 @@ export default function Work() {
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     selectedTag === tag
                       ? "bg-white text-black"
-                      : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white"
+                      : "glass text-gray-300 hover:bg-gray-700/50 hover:text-white"
                   }`}
                 >
                   {tag}
@@ -105,7 +104,7 @@ export default function Work() {
                 <h3 className="text-xl text-white mb-4">
                   oops, something went wrong
                 </h3>
-                <p className="text-gray-400 mb-6">{error}</p>
+                <p className="text-gray-300 mb-6">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
                   className="px-6 py-2 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors"
@@ -124,9 +123,9 @@ export default function Work() {
           projects.length > 0 && (
             <ScrollAnimation delay={300}>
               <div className="text-center py-16">
-                <div className="w-16 h-16 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-6 glass rounded-full flex items-center justify-center">
                   <svg
-                    className="w-8 h-8 text-gray-400"
+                    className="w-8 h-8 text-gray-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -140,7 +139,7 @@ export default function Work() {
                   </svg>
                 </div>
                 <h3 className="text-xl text-white mb-2">no projects found</h3>
-                <p className="text-gray-400">
+                <p className="text-gray-300">
                   try selecting a different category
                 </p>
               </div>
@@ -156,7 +155,7 @@ export default function Work() {
                   <ScrollAnimation key={project.id} delay={300 + index * 100}>
                     <article className="group">
                       <Link
-                        to={`/work/${project.slug}`}
+                        to={`/projects/${project.slug}`}
                         className="block glass rounded-xl hover-lift transition-all duration-500 border border-gray-800/50 hover:border-gray-600/50 overflow-hidden"
                       >
                         {/* Project Image */}
@@ -169,7 +168,7 @@ export default function Work() {
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-                              <span className="text-gray-600 text-sm">
+                              <span className="text-gray-500 text-sm">
                                 preview
                               </span>
                             </div>
@@ -183,16 +182,16 @@ export default function Work() {
                           </h2>
 
                           {project.year && (
-                            <time className="text-gray-500 text-xs mb-3 block">
+                            <time className="text-gray-300 text-xs mb-3 block">
                               {project.year}
                             </time>
                           )}
 
-                          <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors mb-4 line-clamp-3">
+                          <p className="text-gray-300 text-sm leading-relaxed group-hover:text-gray-300 transition-colors mb-4 line-clamp-3">
                             {project.description}
                           </p>
 
-                          <div className="flex items-center text-gray-400 group-hover:text-white transition-colors">
+                          <div className="flex items-center text-gray-300 group-hover:text-white transition-colors">
                             <span className="text-sm">view project</span>
                             <svg
                               className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
