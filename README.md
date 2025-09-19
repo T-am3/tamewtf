@@ -39,6 +39,7 @@ src/
 │   ├── Blog.tsx            # blog posts listing
 │   ├── BlogPost.tsx        # individual blog post view
 │   ├── ProjectDetail.tsx   # individual project view
+│   ├── Guestbook.tsx       # visitor messages and comments
 │   └── Contact.tsx         # contact form and social links
 ├── utils/
 │   └── markdown.ts         # content parsing and fetching utilities
@@ -56,13 +57,16 @@ public/
 └── images/                 # static assets
 ```
 
-## tech stack
+## features
 
-- **react 19** + **typescript 5**
-- **vite 7** - build tool with hot reload
-- **react router v7** - client-side routing
-- **tailwind css v4** - utility-first styling
-- **dynamic git hash** - build info in footer
+- **responsive design** - works perfectly on all devices
+- **dark minimalist theme** - clean, professional aesthetic
+- **markdown-based content** - blogs and projects managed via markdown files
+- **dynamic content loading** - content fetched at runtime for fast builds
+- **guestbook** - visitors can leave messages and comments with reply functionality
+- **blog system** - chronological blog posts with categories and tags
+- **project portfolio** - showcase work with filtering and detailed views
+- **seo optimized** - proper meta tags and semantic HTML
 
 ## content management
 

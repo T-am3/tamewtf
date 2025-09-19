@@ -27,6 +27,7 @@ export default function Layout() {
     { path: "/about", label: "about" },
     { path: "/projects", label: "projects" },
     { path: "/blog", label: "blog" },
+    { path: "/guestbook", label: "guestbook" },
   ];
 
   return (
