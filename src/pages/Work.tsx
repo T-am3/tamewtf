@@ -57,9 +57,7 @@ export default function Work() {
             </h1>
             <div className="w-20 h-1 bg-white mb-8" />
             <p className="text-xl text-gray-300 leading-relaxed max-w-3xl">
-              a collection of random experiments, side projects, and creative
-              ideas i've been working on. some work, some don't, but all were
-              fun to build.
+              a collection of my work
             </p>
           </div>
         </ScrollAnimation>

@@ -11,7 +11,7 @@ This is a React + TypeScript portfolio website using Vite, featuring a dark mini
 ## Content Management
 Content lives in `public/` directory:
 - Blog posts: `public/blog/*.md`
-- Projects: `public/content/projects/*.md`
+- Projects: `public/projects/*.md`
 
 **Content Structure:**
 ```yaml
@@ -30,6 +30,7 @@ previewImage: https://example.com/image.jpg
 ```typescript
 // Content loaded via fetch at runtime, not bundled
 const result = await fetchMarkdownFile(`/blog/${slug}.md`);
+const result = await fetchMarkdownFile(`/projects/${slug}.md`);
 ```
 
 ## Styling Conventions
@@ -81,8 +82,8 @@ src/
   pages/         # Route components
   utils/         # Content parsing utilities
 public/
-  blog/          # Markdown blog posts
-  content/projects/  # Project markdown files
+  blog/          # Markdown blog posts + blogs.json manifest
+  projects/      # Project markdown files + projects.json manifest
   images/        # Static assets
 ```
 
@@ -92,11 +93,25 @@ public/
 - TypeScript with strict ESLint rules
 - Git hash injection for versioning
 
+## Content Management System
+Content is managed through manifest files for dynamic loading:
+
+**Manifest Files:**
+- `public/blog/blogs.json` - Array of available blog post slugs
+- `public/projects/projects.json` - Array of available project slugs
+
+**Example Manifest:**
+```json
+["music-production-setup", "web-development-journey"]
+```
+
 ## Adding New Content
-1. Create markdown file in appropriate `public/` subdirectory
-2. Add slug to hardcoded array in `markdown.ts` (e.g., `blogSlugs`)
+1. Create markdown file in appropriate `public/` subdirectory (`blog/` or `projects/`)
+2. Add the slug to the corresponding manifest file (e.g., `blogs.json` or `projects.json`)
 3. Include required frontmatter fields
 4. Test loading via development server
+
+**No more hardcoded arrays!** Content is discovered dynamically through manifest files.
 
 ## Performance Notes
 - Content fetched at runtime (not bundled)

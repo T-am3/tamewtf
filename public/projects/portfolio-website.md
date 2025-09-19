@@ -6,7 +6,7 @@ featured: true
 status: completed
 liveUrl: https://tame.wtf
 sourceUrl: https://github.com/t-am3/tamewtf
-previewImage: https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop&crop=center
+previewImage: /images/projects/4PCqnzhVb6.png
 tags: ["web development"]
 ---
 

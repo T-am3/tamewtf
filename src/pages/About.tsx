@@ -3,7 +3,7 @@ import { ScrollAnimation } from "../components/ScrollAnimation";
 export default function About() {
   const skills = {
     vfx: ["after effects", "cinema 4d", "blender", "davinci resolve"],
-    music: ["ableton live", "fl studio", "serum", "massive"],
+    music: ["ableton live", "fl studio", "serum", "mixing & mastering"],
     web: ["html & css", "javascript", "react", "tailwind", "node.js"],
     uiux: ["figma", "adobe illustrator"],
   };

@@ -195,12 +195,16 @@ export async function fetchMarkdownFile(path: string): Promise<MarkdownParseResu
 
 // Get all blog posts
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
-  const blogSlugs = [
-    "creative-project-management",
-    "building-first-vfx-project",
-    "web-development-journey",
-    "music-production-setup",
-  ];
+  let blogSlugs: string[] = [];
+
+  try {
+    // Try to fetch the manifest file first
+    const manifestResponse = await fetch('/blog/blogs.json');
+    blogSlugs = await manifestResponse.json();
+  } catch {
+    // Fallback to empty array if manifest doesn't exist
+    blogSlugs = [];
+  }
 
   const posts: BlogPost[] = [];
 
@@ -258,18 +262,22 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 // Get all projects
 export async function getAllProjects(): Promise<Project[]> {
-  const projectSlugs = [
-    "motion-graphics-reel",
-    "electronic-ep",
-    "portfolio-website",
-    "3d-product-visualization",
-  ];
+  let projectSlugs: string[] = [];
+
+  try {
+    // Try to fetch the manifest file first
+    const manifestResponse = await fetch('/projects/projects.json');
+    projectSlugs = await manifestResponse.json();
+  } catch {
+    // Fallback to empty array if manifest doesn't exist
+    projectSlugs = [];
+  }
 
   const projects: Project[] = [];
 
   for (const slug of projectSlugs) {
     try {
-      const result = await fetchMarkdownFile(`/content/projects/${slug}.md`);
+      const result = await fetchMarkdownFile(`/projects/${slug}.md`);
       if (result) {
         const { metadata, content } = result;
         projects.push({
@@ -300,7 +308,7 @@ export async function getAllProjects(): Promise<Project[]> {
 
 // Get single project by slug
 export async function getProject(slug: string): Promise<Project | null> {
-  const result = await fetchMarkdownFile(`/content/projects/${slug}.md`);
+  const result = await fetchMarkdownFile(`/projects/${slug}.md`);
   if (!result) return null;
 
   const { metadata, content } = result;
