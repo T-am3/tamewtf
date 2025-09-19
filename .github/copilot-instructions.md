@@ -1,4 +1,4 @@
-# tame.wtf - AI Coding Guidelines
+# tame.wtf
 
 ## Architecture Overview
 This is a React + TypeScript portfolio website using Vite, featuring a dark minimalist design. Content is stored as Markdown files in `public/` and loaded dynamically at runtime.
@@ -111,11 +111,9 @@ Content is managed through manifest files for dynamic loading:
 3. Include required frontmatter fields
 4. Test loading via development server
 
-**No more hardcoded arrays!** Content is discovered dynamically through manifest files.
 
 ## Performance Notes
 - Content fetched at runtime (not bundled)
 - Intersection Observer for scroll animations
 - Minimal bundle with Vite tree-shaking
-- Responsive images with Unsplash URLs</content>
-<parameter name="filePath">c:\dev\tamewtf\.github\copilot-instructions.md
+- Responsive images with Unsplash URLs

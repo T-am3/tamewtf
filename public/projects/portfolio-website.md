@@ -1,7 +1,7 @@
 ---
-title: creative portfolio website
+title: portfolio website
 description: lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-year: 2024
+year: 2025
 featured: true
 status: completed
 liveUrl: https://tame.wtf

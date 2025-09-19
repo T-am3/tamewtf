@@ -251,7 +251,6 @@ export default function Home() {
                         heyo, i'm tame! i'm a 16 year old furry programmer, and
                         musician living in chicago, illinois.
                       </p>
-
                       <p className="text-gray-300 leading-relaxed">
                         {(() => {
                           const now = new Date();
@@ -329,10 +328,11 @@ export default function Home() {
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {[
-                          "after effects",
+                          "adobe after effects",
                           "cinema 4d",
                           "blender",
                           "davinci resolve",
+                          "adobe premiere pro",
                         ].map((skill) => (
                           <span
                             key={skill}
@@ -494,7 +494,7 @@ export default function Home() {
 
               <div className="group relative">
                 <a
-                  href="https://www.roblox.com/users/123456789/profile"
+                  href="https://www.roblox.com/users/225000861/profile"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white transition-colors duration-200"
@@ -502,10 +502,12 @@ export default function Home() {
                   <svg
                     className="w-8 h-8"
                     fill="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox="20 -5 250 312"
                   >
-                    <path d="M12.024 10.882c-1.162 0-2.1.936-2.1 2.093 0 1.157.938 2.093 2.1 2.093s2.1-.936 2.1-2.093c0-1.157-.938-2.093-2.1-2.093zm0 3.345c-.645 0-1.168-.52-1.168-1.16 0-.64.523-1.16 1.168-1.16.645 0 1.168.52 1.168 1.16 0 .64-.523 1.16-1.168 1.16z" />
-                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm5.584 13.03c-.18.42-.504.756-.918.918-.414.162-.864.126-1.242-.096-.378-.222-.648-.588-.756-.996-.108-.408-.036-.84.198-1.194.234-.354.624-.576 1.044-.576h.036c.468 0 .918.252 1.152.666.234.414.216.936-.054 1.332-.27.396-.72.612-1.152.612-.216 0-.432-.054-.612-.162-.18-.108-.324-.27-.414-.468-.09-.198-.126-.414-.126-.63 0-.72.576-1.296 1.296-1.296.36 0 .702.144.954.396.252.252.396.594.396.954 0 .252-.054.504-.162.72z" />
+                    <path id="path20" inkscape:connector-curvature="0" className="st0" d="M120.5,271.7c-110.9-28.6-120-31-119.9-31.5
+	C0.7,239.6,62.1,0.5,62.2,0.4c0,0,54,13.8,119.9,30.8s120,30.8,120.1,30.8c0.2,0,0.2,0.4,0.1,0.9c-0.2,1.5-61.5,239.3-61.7,239.5
+	C240.6,302.5,186.5,288.7,120.5,271.7z M174.9,158c3.2-12.6,5.9-23.1,6-23.4c0.1-0.5-2.3-1.2-23.2-6.6c-12.8-3.3-23.5-5.9-23.6-5.8
+	c-0.3,0.3-12.1,46.6-12,46.7c0.2,0.2,46.7,12.2,46.8,12.1C168.9,180.9,171.6,170.6,174.9,158L174.9,158z"/>
                   </svg>
                 </a>
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-gray-700">
