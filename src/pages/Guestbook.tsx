@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { ScrollAnimation } from '../components/ScrollAnimation'
 
+// This logic fucking sucks but it's 10pm and I'm tired
+
 interface GuestbookEntry {
   id: string
   name: string
