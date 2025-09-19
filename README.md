@@ -10,19 +10,23 @@ personal portfolio website
 
 ### local development
 ```bash
-# install dependencies
+# install frontend dependencies
 npm install
 
-# start dev server
+# install server dependencies
+cd ../tamewtf-server && npm install && cd ../tamewtf
+
+# start both frontend (port 5173) and server (port 3001)
 npm run dev
-# → http://localhost:5173
 
-# build for production
-npm run build
-
-# preview production build
-npm run preview
+# or start them separately:
+# frontend only: npm run dev
+# server only: cd ../tamewtf-server && npm run dev
 ```
+
+### api endpoints
+- **health check**: `http://localhost:3001/api/health`
+- **guestbook**: `GET/POST http://localhost:3001/api/guestbook`
 
 ## project structure
 
@@ -46,6 +50,17 @@ src/
 ├── App.tsx                 # main app with routing
 ├── main.tsx                # entry point
 └── index.css               # global styles and animations
+
+../tamewtf-server/
+├── src/
+│   ├── server.js           # express server with middleware
+│   └── routes/
+│       ├── index.js        # api route mounting
+│       ├── guestbook.js    # guestbook api endpoints
+│       └── lastfm.js       # last.fm integration endpoints
+├── .env                    # environment configuration
+├── package.json            # server dependencies
+└── README.md              # server documentation
 
 public/
 ├── blog/
