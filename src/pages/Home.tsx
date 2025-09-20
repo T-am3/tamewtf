@@ -273,7 +273,7 @@ export default function Home() {
                             hour >= 0 && hour < 7
                               ? "i'm probably sleeping"
                               : "i am likely awake";
-                          return `it is ${formattedTime} in Chicago, Illinois — ${status}`;
+                          return `it is ${formattedTime} in chicago, illinois — ${status}`;
                         })()}
                       </p>
                     </div>

@@ -1,5 +1,5 @@
 ---
-title: portfolio website
+title: this website
 description: lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 year: 2025
 featured: true
@@ -10,6 +10,6 @@ previewImage: /images/projects/4PCqnzhVb6.png
 tags: ["web development"]
 ---
 
-# creative portfolio website
+# personal portfolio website
 
 lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
