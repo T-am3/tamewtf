@@ -10,7 +10,6 @@ const Work = lazy(() => import("./pages/Work"));
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
-const Guestbook = lazy(() => import("./pages/Guestbook"));
 
 // Loading component for Suspense fallback
 const PageLoader = () => (
@@ -32,7 +31,6 @@ function App() {
               <Route path="projects/:slug" element={<ProjectDetail />} />
               <Route path="blog" element={<Blog />} />
               <Route path="blog/:slug" element={<BlogPost />} />
-              <Route path="guestbook" element={<Guestbook />} />
             </Route>
           </Routes>
         </Suspense>

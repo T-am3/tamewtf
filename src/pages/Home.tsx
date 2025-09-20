@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import wavingHandWebp from "../assets/Waving Hand.webp";
 import { ScrollAnimation } from "../components/ScrollAnimation";
+import LastFM from "../components/LastFM";
 import {
   getAllProjects,
   getAllBlogPosts,
@@ -279,40 +280,7 @@ export default function Home() {
                   </div>
 
                   {/* Last.fm listening component */}
-                  <div className="mt-8 relative rounded-lg overflow-hidden border border-gray-800/50">
-                    {/* Blurred background cover art */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-700/30 to-gray-800/30 blur-sm"></div>
-                    <div className="absolute inset-0 bg-black/60"></div>
-
-                    <div className="relative p-6">
-                      <div className="mb-4">
-                        <h4 className="text-lg text-white font-light">
-                          last listened to
-                        </h4>
-                      </div>
-
-                      <div className="flex items-center space-x-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-gray-700/50 to-gray-800/50 rounded-lg flex items-center justify-center border border-gray-600/30">
-                          <svg
-                            className="w-8 h-8 text-gray-300"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-                          </svg>
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white font-medium truncate">
-                            loading track...
-                          </p>
-                          <p className="text-gray-300 text-sm truncate">
-                            fetching current song
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <LastFM className="mt-8" />
                 </div>
 
                 {/* Skills preview */}

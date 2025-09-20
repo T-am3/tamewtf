@@ -13,20 +13,15 @@ personal portfolio website
 # install frontend dependencies
 npm install
 
-# install server dependencies
-cd ../tamewtf-server && npm install && cd ../tamewtf
 
-# start both frontend (port 5173) and server (port 3001)
-npm run dev
+# start both frontend and server
+npm run dev:full
 
-# or start them separately:
-# frontend only: npm run dev
-# server only: cd ../tamewtf-server && npm run dev
+# or run them separately:
+npm run dev          # frontend only
+npm run server:dev   # server only
 ```
 
-### api endpoints
-- **health check**: `http://localhost:3001/api/health`
-- **guestbook**: `GET/POST http://localhost:3001/api/guestbook`
 
 ## project structure
 
@@ -35,7 +30,8 @@ src/
 ├── components/
 │   ├── Layout.tsx           # main layout with nav and footer
 │   ├── ScrollAnimation.tsx  # intersection observer utility
-│   └── ErrorBoundary.tsx    # error handling component
+│   ├── ErrorBoundary.tsx    # error handling component
+│   └── LastFM.tsx           # LastFM integration component
 ├── pages/
 │   ├── Home.tsx            # landing page with featured work
 │   ├── About.tsx           # background, skills, experience, FAQ
@@ -43,7 +39,6 @@ src/
 │   ├── Blog.tsx            # blog posts listing
 │   ├── BlogPost.tsx        # individual blog post view
 │   ├── ProjectDetail.tsx   # individual project view
-│   ├── Guestbook.tsx       # visitor messages and comments
 │   └── Contact.tsx         # contact form and social links
 ├── utils/
 │   └── markdown.ts         # content parsing and fetching utilities
@@ -51,16 +46,11 @@ src/
 ├── main.tsx                # entry point
 └── index.css               # global styles and animations
 
-../tamewtf-server/
-├── src/
-│   ├── server.js           # express server with middleware
-│   └── routes/
-│       ├── index.js        # api route mounting
-│       ├── guestbook.js    # guestbook api endpoints
-│       └── lastfm.js       # last.fm integration endpoints
-├── .env                    # environment configuration
+server/
+├── index.js                # express server with LastFM API
 ├── package.json            # server dependencies
-└── README.md              # server documentation
+├── .env.example            # environment variables template
+└── README.md               # server setup instructions
 
 public/
 ├── blog/
@@ -78,10 +68,47 @@ public/
 - **dark minimalist theme** - clean, professional aesthetic
 - **markdown-based content** - blogs and projects managed via markdown files
 - **dynamic content loading** - content fetched at runtime for fast builds
-- **guestbook** - visitors can leave messages and comments with reply functionality
 - **blog system** - chronological blog posts with categories and tags
 - **project portfolio** - showcase work with filtering and detailed views
 - **seo optimized** - proper meta tags and semantic HTML
+- **LastFM integration** - displays currently playing music with server-side API
+
+## server setup (LastFM integration)
+
+The project includes a Node.js server for secure LastFM API integration:
+
+### server configuration
+1. **Navigate to server directory:**
+   ```bash
+   cd server
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment:**
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your LastFM API key
+   ```
+
+4. **Get LastFM API key:**
+   - Visit [LastFM API Account](https://www.last.fm/api/account/create)
+   - Create account or login
+   - Fill application form
+   - Add API key to `.env` file
+
+5. **Start server:**
+   ```bash
+   npm run dev  # development with auto-restart
+   npm start    # production
+   ```
+
+### server endpoints
+- `GET /api/health` - Health check
+- `GET /api/lastfm/recent?username=tame` - Get recent track
 
 ## content management
 

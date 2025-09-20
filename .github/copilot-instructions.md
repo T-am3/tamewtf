@@ -111,9 +111,95 @@ Content is managed through manifest files for dynamic loading:
 3. Include required frontmatter fields
 4. Test loading via development server
 
-
 ## Performance Notes
 - Content fetched at runtime (not bundled)
 - Intersection Observer for scroll animations
 - Minimal bundle with Vite tree-shaking
 - Responsive images with Unsplash URLs
+
+## Critical Patterns for AI Agents
+
+### Error Handling Strategy
+```typescript
+// Use custom error classes for better debugging
+export class MarkdownParseError extends Error {
+  constructor(message: string, filePath?: string) {
+    super(message);
+    this.name = 'MarkdownParseError';
+    this.filePath = filePath;
+  }
+}
+
+// Graceful degradation - continue loading other content if one fails
+for (const slug of blogSlugs) {
+  try {
+    const result = await fetchMarkdownFile(`/blog/${slug}.md`);
+    // Process result
+  } catch (error) {
+    console.warn(`Failed to load blog post ${slug}:`, error);
+    // Continue with other posts instead of failing completely
+  }
+}
+```
+
+### Git Hash Injection
+```typescript
+// vite.config.ts - Dynamic git hash for versioning
+const getGitHash = () => {
+  try {
+    return execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim()
+  } catch {
+    return 'dev'
+  }
+}
+
+export default defineConfig({
+  define: {
+    __GIT_HASH__: JSON.stringify(getGitHash())
+  }
+})
+```
+
+### Mobile-First Navigation
+```tsx
+// Layout.tsx - Hamburger menu with staggered animations
+<button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+  <span className={`transition-all duration-300 ${
+    isMenuOpen ? "rotate-45 translate-y-1.5" : ""
+  }`} />
+</button>
+
+// Staggered link animations in mobile menu
+style={{
+  animationDelay: isMenuOpen ? `${index * 100}ms` : "0ms"
+}}
+```
+
+### Content Parsing Robustness
+```typescript
+// markdown.ts - Handle both array and comma-separated tag formats
+function parseTags(metadata: Record<string, string>): string[] {
+  const tagsString = metadata.tags || "";
+  if (tagsString.startsWith("[") && tagsString.endsWith("]")) {
+    return tagsString
+      .slice(1, -1)
+      .split(",")
+      .map(tag => tag.trim().replace(/['"]/g, ""));
+  } else {
+    return tagsString.split(",").map(tag => tag.trim());
+  }
+}
+```
+
+### Build Optimization
+```typescript
+// vite.config.ts - Manual chunk splitting for caching
+rollupOptions: {
+  output: {
+    manualChunks: {
+      'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+      'utils': ['./src/utils/markdown.ts']
+    }
+  }
+}
+```
