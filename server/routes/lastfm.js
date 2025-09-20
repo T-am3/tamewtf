@@ -43,7 +43,7 @@ const validateUsername = (req, res, next) => {
 // Hardcoded username for security - read from environment variable
 const USERNAME = process.env.DEFAULT_LASTFM_USERNAME || 'tam3_';
 
-// GET /api/lastfm/recent - Get user's recent tracks
+// GET /lastfm/recent - Get user's recent tracks
 router.get('/recent', validateApiKey, validateUsername, async (req, res) => {
   try {
     const { limit = 1 } = req.query;
@@ -107,7 +107,7 @@ router.get('/recent', validateApiKey, validateUsername, async (req, res) => {
   }
 });
 
-// GET /api/lastfm/top-tracks - Get user's top tracks
+// GET /lastfm/top-tracks - Get user's top tracks
 router.get('/top-tracks', validateApiKey, validateUsername, async (req, res) => {
   try {
     const { period = '7day', limit = 10 } = req.query;

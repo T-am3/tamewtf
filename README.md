@@ -107,8 +107,8 @@ The project includes a Node.js server for secure LastFM API integration:
    ```
 
 ### server endpoints
-- `GET /api/health` - Health check
-- `GET /api/lastfm/recent?username=tame` - Get recent track
+- `GET /health` - Health check
+- `GET /lastfm/recent?username=tame` - Get recent track
 
 ## content management
 

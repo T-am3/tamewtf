@@ -30,15 +30,15 @@ const lastfmRateLimit = createRateLimit(15 * 60 * 1000, 50); // 50 requests per 
 const generalRateLimit = createRateLimit(15 * 60 * 1000, 100); // 100 requests per 15 minutes for general
 
 // Apply rate limiting
-app.use('/api/lastfm', lastfmRateLimit);
-app.use('/api', generalRateLimit);
+app.use('/lastfm', lastfmRateLimit);
+app.use('/', generalRateLimit);
 
 // Request timeout
 app.use(timeout(30000)); // 30 second timeout
 
 // Routes
-app.use('/api/lastfm', lastfmRoutes);
-app.use('/api', apiRoutes);
+app.use('/lastfm', lastfmRoutes);
+app.use('/', apiRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -46,10 +46,10 @@ app.get('/', (req, res) => {
     message: 'tame.wtf API Server',
     version: '1.0.0',
     endpoints: {
-      api: '/api',
-      lastfm: '/api/lastfm'
+      api: '/',
+      lastfm: '/lastfm'
     },
-    docs: '/api'
+    docs: '/'
   });
 });
 
@@ -86,10 +86,10 @@ app.use((req, res) => {
     code: 'NOT_FOUND',
     availableEndpoints: {
       root: '/',
-      api: '/api',
+      api: '/',
       lastfm: {
-        recent: '/api/lastfm/recent',
-        topTracks: '/api/lastfm/top-tracks'
+        recent: '/lastfm/recent',
+        topTracks: '/lastfm/top-tracks'
       }
     },
   });
@@ -97,5 +97,5 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`API docs: http://localhost:${PORT}/api`);
+  console.log(`API docs: http://localhost:${PORT}/`);
 });

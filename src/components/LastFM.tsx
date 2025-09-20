@@ -26,7 +26,7 @@ export default function LastFM({
           `${process.env.NODE_ENV === 'production'
             ? 'https://tamewtf-server.herokuapp.com' // Update with your production server URL
             : 'http://localhost:3001'
-          }/api/lastfm/recent`
+          }/lastfm/recent`
         );
 
         if (!response.ok) {
