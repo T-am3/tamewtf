@@ -1,26 +1,12 @@
 # tame.wtf
 
-personal portfolio website
+personal website for myself
 
 ## development setup
 
 ### prerequisites
 - node.js 18+
 - npm
-
-### local development
-```bash
-# install frontend dependencies
-npm install
-
-
-# start both frontend and server
-npm run dev:full
-
-# or run them separately:
-npm run dev          # frontend only
-npm run server:dev   # server only
-```
 
 
 ## project structure
@@ -39,7 +25,6 @@ src/
 │   ├── Blog.tsx            # blog posts listing
 │   ├── BlogPost.tsx        # individual blog post view
 │   ├── ProjectDetail.tsx   # individual project view
-│   └── Contact.tsx         # contact form and social links
 ├── utils/
 │   └── markdown.ts         # content parsing and fetching utilities
 ├── App.tsx                 # main app with routing
@@ -65,11 +50,8 @@ public/
 ## features
 
 - **responsive design** - works perfectly on all devices
-- **dark minimalist theme** - clean, professional aesthetic
 - **markdown-based content** - blogs and projects managed via markdown files
-- **dynamic content loading** - content fetched at runtime for fast builds
-- **blog system** - chronological blog posts with categories and tags
-- **project portfolio** - showcase work with filtering and detailed views
+- **blog system** - blog posts with categories and tags
 - **seo optimized** - proper meta tags and semantic HTML
 - **LastFM integration** - displays currently playing music with server-side API
 
@@ -106,9 +88,6 @@ The project includes a Node.js server for secure LastFM API integration:
    npm start    # production
    ```
 
-### server endpoints
-- `GET /health` - Health check
-- `GET /lastfm/recent?username=tame` - Get recent track
 
 ## content management
 
@@ -186,11 +165,3 @@ content is managed through markdown files in the `public/` directory with manife
 - `status`: project status
 - `liveUrl`: live demo URL
 - `sourceUrl`: source code URL
-
-## deployment notes
-
-- uses dynamic git commit hash in footer
-- vite config automatically injects `__GIT_HASH__` global
-- build includes all optimizations for production
-- configured for custom domain (tame.wtf)
-- content served statically from `public/` directory
