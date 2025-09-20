@@ -24,7 +24,7 @@ export default function LastFM({
       try {
         const response = await fetch(
           `${process.env.NODE_ENV === 'production'
-            ? 'https://tamewtf-server.herokuapp.com' // Update with your production server URL
+            ? 'https://api.tame.wtf'
             : 'http://localhost:3001'
           }/lastfm/recent`
         );
