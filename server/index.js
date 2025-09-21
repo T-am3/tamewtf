@@ -38,7 +38,7 @@ app.use(timeout(30000)); // 30 second timeout
 
 // Routes
 app.use('/lastfm', lastfmRoutes);
-app.use('/', apiRoutes);
+app.use('/api', apiRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
     message: 'tame.wtf API Server',
     version: '1.0.0',
     endpoints: {
-      api: '/',
+      api: '/api',
       lastfm: '/lastfm'
     },
     docs: '/'
