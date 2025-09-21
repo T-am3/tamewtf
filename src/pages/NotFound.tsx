@@ -19,7 +19,7 @@ const NotFound: React.FC = () => {
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <ScrollAnimation delay={200} threshold={0.1}>
         <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 mx-auto mb-8 glass rounded-full flex items-center justify-center">
+          <div className="w-20 h-20 mx-auto mb-8 glass rounded-full flex items-center justify-center text-white">
             <svg
               className="w-10 h-10 white"
               fill="none"

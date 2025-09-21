@@ -84,7 +84,12 @@ document.getElementById("about-section")?.scrollIntoView({
 });
 ```
 
-## Development Workflow
+## Routing Structure
+The app uses React Router with nested routes:
+
+- **Layout-wrapped routes:** Home, About, Work, Blog, BlogPost, ProjectDetail (include navigation)
+- **Standalone routes:** NotFound (full-page takeover, no navigation)
+- **Error boundary:** Wraps entire app for error handling
 ```bash
 npm run dev      # Vite dev server on :5173
 npm run build    # TypeScript + Vite build

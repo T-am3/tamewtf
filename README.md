@@ -82,6 +82,16 @@ public/
 </ScrollAnimation>
 ```
 
+## routing structure
+
+The app uses React Router with a hybrid routing approach:
+
+- **Layout-wrapped routes** (with navigation): Home, About, Work, Blog, BlogPost, ProjectDetail
+- **Standalone routes** (full-page takeover): NotFound page (no navigation header)
+- **Error boundary**: Wraps entire app for comprehensive error handling
+
+This allows the 404 page to take over the entire viewport without navigation distractions, similar to error states.
+
 ## server setup (LastFM integration)
 
 The project includes a Node.js server for secure LastFM API integration:

@@ -32,8 +32,8 @@ function App() {
               <Route path="projects/:slug" element={<ProjectDetail />} />
               <Route path="blog" element={<Blog />} />
               <Route path="blog/:slug" element={<BlogPost />} />
-              <Route path="*" element={<NotFound />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </Router>
