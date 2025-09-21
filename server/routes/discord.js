@@ -69,9 +69,9 @@ router.get('/profile', validateDiscordToken, validateDiscordUserId, async (req, 
       username: userData.username,
       discriminator: userData.discriminator,
       avatar: userData.avatar,
-      // Construct avatar URL if avatar exists
+      // Construct avatar URL - check if animated (starts with 'a_')
       avatarUrl: userData.avatar
-        ? `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png?size=256`
+        ? `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.${userData.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`
         : null,
       global_name: userData.global_name,
     });
