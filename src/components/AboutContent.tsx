@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollAnimation } from "../components/ScrollAnimation";
 import LastFM from "../components/LastFM";
+import DiscordAvatar from "../components/DiscordAvatar";
 
 interface AboutContentProps {
   className?: string;
@@ -27,10 +28,10 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                     heyo, i'm tame! i'm a 16 year old furry programmer, and
                     musician living in Chicago, Illinois.
                   </p>
-                  <img
-                    src="/images/tame.gif"
-                    alt="Profile picture"
-                    className="w-32 h-32 rounded-full border-2 border-gray-700"
+                  <DiscordAvatar
+                    className="w-32 h-32"
+                    size={128}
+                    fallbackSrc="/images/tame.gif"
                   />
                   <p className="text-gray-300 leading-relaxed">
                     {(() => {

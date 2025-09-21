@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3001;
 // Import routes
 const lastfmRoutes = require('./routes/lastfm');
 const apiRoutes = require('./routes/api');
+const discordRoutes = require('./routes/discord');
 
 // Import middleware
 const { createRateLimit, requestLogger, securityHeaders, timeout } = require('./middleware/common');
@@ -39,6 +40,7 @@ app.use(timeout(30000)); // 30 second timeout
 // Routes
 app.use('/lastfm', lastfmRoutes);
 app.use('/api', apiRoutes);
+app.use('/discord', discordRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -47,7 +49,8 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     endpoints: {
       api: '/api',
-      lastfm: '/lastfm'
+      lastfm: '/lastfm',
+      discord: '/discord'
     },
     docs: '/'
   });
@@ -90,6 +93,9 @@ app.use((req, res) => {
       lastfm: {
         recent: '/lastfm/recent',
         topTracks: '/lastfm/top-tracks'
+      },
+      discord: {
+        profile: '/discord/profile'
       }
     },
   });
