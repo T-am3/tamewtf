@@ -13,6 +13,22 @@ const handleGitHubPagesRedirect = () => {
   }
 };
 
+// Handle dynamic viewport height for mobile Safari
+const setVH = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
+// Set initial viewport height
+setVH();
+
+// Update viewport height on resize and orientation change
+window.addEventListener('resize', setVH);
+window.addEventListener('orientationchange', () => {
+  // Small delay to ensure viewport has updated after orientation change
+  setTimeout(setVH, 100);
+});
+
 // Call the redirect handler before rendering
 handleGitHubPagesRedirect();
 
