@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist --dotfiles",
     "server": "cd server && npm start",
     "server:dev": "cd server && npm run dev"
   },
