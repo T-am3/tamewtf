@@ -34,13 +34,18 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                       size={128}
                       fallbackSrc="/images/tame.gif"
                     />
-                    <div className="relative">
+                    {/*Disabled for now/}
+                    
+                    {/*
+                       <div className="relative">
                       <div className="bg-white/10 backdrop-blur-lg border border-gray-700/30 rounded-2xl px-4 py-3 max-w-xs">
                         <p className="text-white text-sm leading-relaxed">
                           meow
                         </p>
                       </div>
                     </div>
+                    */}
+ 
                   </div>
                   <p className="text-gray-300 leading-relaxed">
                     {(() => {
