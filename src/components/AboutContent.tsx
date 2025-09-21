@@ -25,7 +25,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                 <div className="space-y-6">
                   <p className="text-lg text-gray-300 leading-relaxed">
                     heyo, i'm tame! i'm a 16 year old furry programmer, and
-                    musician living in chicago, illinois.
+                    musician living in Chicago, Illinois.
                   </p>
                   <img
                     src="/images/tame.gif"
@@ -68,7 +68,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
             <div className="space-y-8">
               <div>
                 <h2 className="text-2xl text-white mb-8">things i do</h2>
-                <div className="space-y-6">
+                <div className="space-y-4.5">
                   <div>
                     <h3 className="text-lg text-gray-300 mb-3">vfx & motion</h3>
                     <div className="flex flex-wrap gap-2">
