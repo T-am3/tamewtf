@@ -16,8 +16,10 @@ src/
 ├── components/
 │   ├── Layout.tsx           # main layout with nav and footer
 │   ├── ScrollAnimation.tsx  # intersection observer utility
-│   ├── ErrorBoundary.tsx    # error handling component
-│   └── LastFM.tsx           # LastFM integration component
+│   ├── AboutContent.tsx     # reusable about section component
+│   ├── LastFM.tsx           # LastFM integration component
+│   ├── Skeleton.tsx         # loading skeleton components
+│   └── ErrorBoundary.tsx    # error handling component
 ├── pages/
 │   ├── Home.tsx            # landing page with featured work
 │   ├── About.tsx           # background, skills, experience, FAQ
@@ -25,6 +27,7 @@ src/
 │   ├── Blog.tsx            # blog posts listing
 │   ├── BlogPost.tsx        # individual blog post view
 │   ├── ProjectDetail.tsx   # individual project view
+│   └── NotFound.tsx        # 404 error page
 ├── utils/
 │   └── markdown.ts         # content parsing and fetching utilities
 ├── App.tsx                 # main app with routing
@@ -50,10 +53,34 @@ public/
 ## features
 
 - **responsive design** - works perfectly on all devices
+- **component architecture** - reusable components like AboutContent for consistent UI
 - **markdown-based content** - blogs and projects managed via markdown files
 - **blog system** - blog posts with categories and tags
 - **seo optimized** - proper meta tags and semantic HTML
 - **LastFM integration** - displays currently playing music with server-side API
+
+### key components
+
+- **AboutContent** - Reusable component containing personal info, skills grid, and social links
+  - Used on both Home and About pages for consistency
+  - Includes LastFM integration and responsive skill display
+  - Accepts custom className prop for styling flexibility
+
+- **ScrollAnimation** - Intersection Observer wrapper for smooth scroll-triggered animations
+- **Skeleton** - Loading state components for better UX during content fetching
+- **ErrorBoundary** - Graceful error handling and fallback UI
+
+### component usage patterns
+
+```tsx
+// Reusable AboutContent component
+<AboutContent className="custom-spacing" />
+
+// Scroll animations
+<ScrollAnimation delay={200} threshold={0.1}>
+  <div>Animated content</div>
+</ScrollAnimation>
+```
 
 ## server setup (LastFM integration)
 

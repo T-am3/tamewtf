@@ -6,6 +6,10 @@ This is a React + TypeScript portfolio website using Vite, featuring a dark mini
 **Key Components:**
 - `Layout.tsx` - Navigation wrapper with mobile menu and loading states
 - `ScrollAnimation.tsx` - Intersection Observer-based animations
+- `AboutContent.tsx` - Reusable component for about section (personal info, skills, social links)
+- `LastFM.tsx` - LastFM integration component
+- `Skeleton.tsx` - Loading skeleton components
+- `ErrorBoundary.tsx` - Error handling component
 - `markdown.ts` - Content parsing utilities for blog posts and projects
 
 ## Content Management
@@ -62,6 +66,24 @@ const [isLoading, setIsLoading] = useState(true);
 // 300ms transition on route changes
 ```
 
+**AboutContent Component:**
+```tsx
+// Reusable component for about section content
+<AboutContent className="custom-spacing" />
+
+// Contains: personal info, skills grid, social links, LastFM integration
+// Used on both Home and About pages for consistency
+```
+
+**Scroll to Explore:**
+```tsx
+// Smooth scroll to about section with center alignment
+document.getElementById("about-section")?.scrollIntoView({
+  behavior: "smooth",
+  block: "center",
+});
+```
+
 ## Development Workflow
 ```bash
 npm run dev      # Vite dev server on :5173
@@ -79,8 +101,22 @@ npm run preview  # Preview production build
 ```
 src/
   components/     # Reusable UI components
+    ├── Layout.tsx           # Navigation wrapper with mobile menu
+    ├── ScrollAnimation.tsx  # Intersection Observer-based animations
+    ├── AboutContent.tsx     # Reusable about section component
+    ├── LastFM.tsx           # LastFM integration component
+    ├── Skeleton.tsx         # Loading skeleton components
+    └── ErrorBoundary.tsx    # Error handling component
   pages/         # Route components
+    ├── Home.tsx            # Landing page with hero and featured content
+    ├── About.tsx           # About page with personal info and experience
+    ├── Work.tsx            # Portfolio/projects listing page
+    ├── Blog.tsx            # Blog posts listing page
+    ├── BlogPost.tsx        # Individual blog post view
+    ├── ProjectDetail.tsx   # Individual project view
+    └── NotFound.tsx        # 404 error page
   utils/         # Content parsing utilities
+    └── markdown.ts         # Markdown parsing and content fetching
 public/
   blog/          # Markdown blog posts + blogs.json manifest
   projects/      # Project markdown files + projects.json manifest
