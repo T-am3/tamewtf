@@ -28,11 +28,20 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                     heyo, i'm tame! i'm a 16 year old furry programmer, and
                     musician living in Chicago, Illinois.
                   </p>
-                  <DiscordAvatar
-                    className="w-32 h-32"
-                    size={128}
-                    fallbackSrc="/images/tame.gif"
-                  />
+                  <div className="flex items-center gap-6">
+                    <DiscordAvatar
+                      className="w-32 h-32 flex-shrink-0"
+                      size={128}
+                      fallbackSrc="/images/tame.gif"
+                    />
+                    <div className="relative">
+                      <div className="bg-white/10 backdrop-blur-lg border border-gray-700/30 rounded-2xl px-4 py-3 max-w-xs">
+                        <p className="text-white text-sm leading-relaxed">
+                          meow
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                   <p className="text-gray-300 leading-relaxed">
                     {(() => {
                       const now = new Date();
