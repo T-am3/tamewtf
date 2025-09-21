@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local
+.github
 .github/copilot-instructions.md
 
 # Editor directories and files
