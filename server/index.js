@@ -45,13 +45,8 @@ app.use('/discord', discordRoutes);
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
-    message: 'tame.wtf API Server',
+    message: 'tame.wtf server',
     version: '1.0.0',
-    endpoints: {
-      api: '/api',
-      lastfm: '/lastfm',
-      discord: '/discord'
-    },
     docs: '/'
   });
 });
