@@ -12,42 +12,66 @@ personal website for myself
 ## project structure
 
 ```
-src/
-├── components/
-│   ├── Layout.tsx           # main layout with nav and footer
-│   ├── ScrollAnimation.tsx  # intersection observer utility
-│   ├── AboutContent.tsx     # reusable about section component
-│   ├── LastFM.tsx           # LastFM integration component
-│   ├── Skeleton.tsx         # loading skeleton components
-│   └── ErrorBoundary.tsx    # error handling component
-├── pages/
-│   ├── Home.tsx            # landing page with featured work
-│   ├── About.tsx           # background, skills, experience, FAQ
-│   ├── Work.tsx            # filterable portfolio with categories
-│   ├── Blog.tsx            # blog posts listing
-│   ├── BlogPost.tsx        # individual blog post view
-│   ├── ProjectDetail.tsx   # individual project view
-│   └── NotFound.tsx        # 404 error page
-├── utils/
-│   └── markdown.ts         # content parsing and fetching utilities
-├── App.tsx                 # main app with routing
-├── main.tsx                # entry point
-└── index.css               # global styles and animations
-
-server/
-├── index.js                # express server with LastFM API
-├── package.json            # server dependencies
-├── .env.example            # environment variables template
-└── README.md               # server setup instructions
-
-public/
-├── blog/
-│   ├── blogs.json          # manifest of available blog posts
-│   └── *.md                # individual blog post markdown files
-├── projects/
-│   ├── projects.json       # manifest of available projects
-│   └── *.md                # individual project markdown files
-└── images/                 # static assets
+.
+├── eslint.config.js         # ESLint configuration
+├── index.html               # HTML entry point
+├── package.json             # Node.js dependencies and scripts
+├── README.md                # Project documentation
+├── tsconfig.app.json        # TypeScript config for app
+├── tsconfig.json            # Main TypeScript configuration
+├── tsconfig.node.json       # TypeScript config for Node.js
+├── vite.config.ts           # Vite build configuration
+├── src/
+│   ├── components/
+│   │   ├── AboutContent.tsx     # reusable about section component
+│   │   ├── DiscordAvatar.tsx    # Discord avatar component
+│   │   ├── ErrorBoundary.tsx    # error handling component
+│   │   ├── LastFM.tsx           # LastFM integration component
+│   │   ├── Layout.tsx           # main layout with nav and footer
+│   │   ├── ScrollAnimation.tsx  # intersection observer utility
+│   │   └── Skeleton.tsx         # loading skeleton components
+│   ├── pages/
+│   │   ├── About.tsx            # background, skills, experience, FAQ
+│   │   ├── Blog.tsx             # blog posts listing
+│   │   ├── BlogPost.tsx         # individual blog post view
+│   │   ├── Home.tsx             # landing page with featured work
+│   │   ├── NotFound.tsx         # 404 error page
+│   │   ├── ProjectDetail.tsx    # individual project view
+│   │   └── Work.tsx             # filterable portfolio with categories
+│   ├── utils/
+│   │   └── markdown.ts          # content parsing and fetching utilities
+│   ├── assets/
+│   │   └── Waving Hand.webp     # static asset
+│   ├── App.tsx                  # main app with routing
+│   ├── index.css                # global styles and animations
+│   ├── main.tsx                 # entry point
+│   └── vite-env.d.ts            # Vite environment types
+├── server/
+│   ├── index.js                 # express server with LastFM API
+│   ├── package.json             # server dependencies
+│   ├── README.md                # server setup instructions
+│   ├── middleware/
+│   │   └── common.js            # common middleware
+│   └── routes/
+│       ├── api.js               # API routes
+│       ├── discord.js           # Discord integration routes
+│       └── lastfm.js            # LastFM API routes
+└── public/
+    ├── 404.html                 # 404 error page
+    ├── CNAME                    # custom domain configuration
+    ├── lastfm.json              # LastFM data
+    ├── blog/
+    │   ├── blogs.json           # manifest of available blog posts
+    │   └── hello.md             # blog post markdown file
+    ├── images/
+    │   ├── tame.gif             # static asset
+    │   ├── blog/
+    │   │   └── silly.png        # blog image
+    │   └── projects/
+    │       └── 4PCqnzhVb6.png   # project image
+    └── projects/
+        ├── projects.json        # manifest of available projects
+        └── tame-wtf.md          # project markdown file
 ```
 
 ## features
