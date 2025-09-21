@@ -151,7 +151,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
 
         <ScrollAnimation delay={400}>
           <div className="mt-12 mb-8">
-            <div className="flex items-center justify-center space-x-10">
+            <div className="flex items-center justify-center space-x-4 md:space-x-10 flex-wrap gap-y-4 px-4">
               <div className="group relative">
                 <a
                   href="https://github.com/T-am3"
@@ -160,7 +160,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6 md:w-8 md:h-8"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -181,7 +181,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6 md:w-8 md:h-8"
                     fill="currentColor"
                     viewBox="0 208.952 1048.713 581.696"
                   >
@@ -202,7 +202,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6 md:w-8 md:h-8"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -223,7 +223,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6 md:w-8 md:h-8"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -244,7 +244,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6 md:w-8 md:h-8"
                     fill="currentColor"
                     viewBox="20 -5 250 312"
                   >
@@ -271,7 +271,7 @@ const AboutContent: React.FC<AboutContentProps> = ({ className = "" }) => {
                   className="text-gray-300 hover:text-white transition-colors duration-200"
                 >
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6 md:w-8 md:h-8"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
