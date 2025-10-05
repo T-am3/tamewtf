@@ -116,7 +116,6 @@ export default function BlogPost() {
           </div>
         </ScrollAnimation>
 
-        {/* Article Header */}
         <ScrollAnimation delay={200}>
           <header className="mb-12">
             <div className="flex items-center space-x-4 mb-6">
@@ -133,7 +132,6 @@ export default function BlogPost() {
           </header>
         </ScrollAnimation>
 
-        {/* Blog Image */}
         {blogPost.previewImage && (
           <ScrollAnimation delay={300}>
             <div className="mb-12">
@@ -148,7 +146,6 @@ export default function BlogPost() {
           </ScrollAnimation>
         )}
 
-        {/* Article Content */}
         <ScrollAnimation delay={400}>
           <article className="prose prose-invert prose-lg max-w-none">
             <div className="text-gray-300 leading-relaxed space-y-6">
@@ -221,7 +218,6 @@ export default function BlogPost() {
           </article>
         </ScrollAnimation>
 
-        {/* Navigation */}
         <ScrollAnimation delay={600}>
           <div className="mt-16 pt-8 border-t border-gray-800">
             <div className="flex justify-end items-center">

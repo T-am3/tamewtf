@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-// Import fetch dynamically for node-fetch v3+
 const getFetch = async () => {
   try {
-    // Try native fetch first (Node.js 18+)
     if (global.fetch) {
       return global.fetch;
     }
-    // Fallback to node-fetch v3+
     const { default: fetch } = await import('node-fetch');
     return fetch;
   } catch (error) {
@@ -16,7 +13,6 @@ const getFetch = async () => {
   }
 };
 
-// Middleware to validate Discord bot token
 const validateDiscordToken = (req, res, next) => {
   const token = process.env.DISCORD_BOT_TOKEN;
   if (!token) {
@@ -29,7 +25,6 @@ const validateDiscordToken = (req, res, next) => {
   next();
 };
 
-// Middleware to validate Discord user ID
 const validateDiscordUserId = (req, res, next) => {
   const userId = process.env.DISCORD_USER_ID;
   if (!userId) {
@@ -42,14 +37,12 @@ const validateDiscordUserId = (req, res, next) => {
   next();
 };
 
-// GET /discord/profile - Get user's Discord profile information
 router.get('/profile', validateDiscordToken, validateDiscordUserId, async (req, res) => {
   try {
     const fetch = await getFetch();
     const token = req.discordToken;
     const userId = req.discordUserId;
 
-    // Fetch user information from Discord API
     const response = await fetch(`https://discord.com/api/v10/users/${userId}`, {
       headers: {
         'Authorization': `Bot ${token}`,
@@ -63,7 +56,6 @@ router.get('/profile', validateDiscordToken, validateDiscordUserId, async (req, 
 
     const userData = await response.json();
 
-    // Return relevant profile information
     res.json({
       id: userData.id,
       username: userData.username,

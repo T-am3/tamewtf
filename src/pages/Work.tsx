@@ -94,7 +94,6 @@ export default function Work() {
           </div>
         </ScrollAnimation>
 
-        {/* Error State */}
         {error && !loading && (
           <ScrollAnimation delay={300}>
             <div className="text-center py-12">
@@ -114,7 +113,6 @@ export default function Work() {
           </ScrollAnimation>
         )}
 
-        {/* Empty Filter State */}
         {!loading &&
           !error &&
           filteredProjects.length === 0 &&
@@ -144,7 +142,6 @@ export default function Work() {
             </ScrollAnimation>
           )}
 
-        {/* All Projects Grid */}
         {!loading && !error && filteredProjects.length > 0 && (
           <ScrollAnimation delay={300}>
             <section>
@@ -173,7 +170,6 @@ export default function Work() {
                           )}
                         </div>
 
-                        {/* Project Content */}
                         <div className="p-6">
                           <h2 className="text-lg font-light text-white group-hover:text-gray-200 transition-colors mb-2">
                             {project.title}
@@ -215,7 +211,6 @@ export default function Work() {
           </ScrollAnimation>
         )}
 
-        {/* Loading State */}
         {loading && (
           <ScrollAnimation delay={300}>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

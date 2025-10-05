@@ -69,7 +69,7 @@ export default function DiscordAvatar({
   }
 
   if (error || !profile?.avatarUrl) {
-    // Fallback to static image if Discord fetch fails
+    // fallback to static image if discord fetch fails
     return (
       <img
         src={fallbackSrc}
@@ -92,7 +92,7 @@ export default function DiscordAvatar({
       className={`rounded-full border-2 border-gray-700 ${className}`}
       style={{ width: size, height: size }}
       onError={(e) => {
-        // Fallback to static image if Discord avatar fails to load
+        // fallback to static image if discord avatar fails to load
         const target = e.target as HTMLImageElement;
         target.src = fallbackSrc;
       }}

@@ -51,7 +51,6 @@ export default function Blog() {
   return (
     <div className="py-20 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <ScrollAnimation>
           <div className="mb-20">
             <h1 className="text-5xl md:text-6xl font-light text-white mb-8">blog</h1>
@@ -62,7 +61,6 @@ export default function Blog() {
           </div>
         </ScrollAnimation>
 
-        {/* Category Filter */}
         <ScrollAnimation delay={200}>
           <div className="mb-12">
             <div className="flex flex-wrap gap-3">
@@ -93,7 +91,6 @@ export default function Blog() {
           </div>
         </ScrollAnimation>
 
-        {/* Loading State */}
         {loading && (
           <ScrollAnimation delay={300}>
             <div className="space-y-8">
@@ -114,7 +111,6 @@ export default function Blog() {
           </ScrollAnimation>
         )}
 
-        {/* Error State */}
         {error && !loading && (
           <ScrollAnimation delay={300}>
             <div className="text-center py-12">
@@ -147,7 +143,6 @@ export default function Blog() {
           </ScrollAnimation>
         )}
 
-        {/* Blog Posts Grid */}
         {!loading && !error && filteredPosts.length > 0 && (
           <div className="space-y-8">
             {filteredPosts.map((post: BlogPost, index: number) => (
@@ -169,7 +164,6 @@ export default function Blog() {
                       </div>
                     )}
                     
-                    {/* Blog Content */}
                     <div className={`p-8 ${post.previewImage ? 'md:w-2/3' : 'w-full'}`}>
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                         <div className="flex items-center space-x-4 mb-3 md:mb-0">

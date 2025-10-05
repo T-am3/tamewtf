@@ -109,7 +109,6 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-/* High contrast mode support */
 @media (prefers-contrast: high) {
   .text-gray-300 {
     color: #cccccc !important;

@@ -1,6 +1,5 @@
 const express = require('express');
 
-// Simple rate limiting middleware
 const createRateLimit = (windowMs = 15 * 60 * 1000, maxRequests = 100) => {
   const requests = new Map();
 
@@ -9,13 +8,10 @@ const createRateLimit = (windowMs = 15 * 60 * 1000, maxRequests = 100) => {
     const now = Date.now();
     const windowStart = now - windowMs;
 
-    // Get existing requests for this IP
     const userRequests = requests.get(key) || [];
 
-    // Filter out old requests
     const recentRequests = userRequests.filter(timestamp => timestamp > windowStart);
 
-    // Check if user has exceeded the limit
     if (recentRequests.length >= maxRequests) {
       return res.status(429).json({
         error: 'Too many requests',
@@ -23,11 +19,9 @@ const createRateLimit = (windowMs = 15 * 60 * 1000, maxRequests = 100) => {
       });
     }
 
-    // Add current request
     recentRequests.push(now);
     requests.set(key, recentRequests);
 
-    // Add rate limit headers
     res.set({
       'X-RateLimit-Limit': maxRequests,
       'X-RateLimit-Remaining': Math.max(0, maxRequests - recentRequests.length),
@@ -38,14 +32,12 @@ const createRateLimit = (windowMs = 15 * 60 * 1000, maxRequests = 100) => {
   };
 };
 
-// Logging middleware
 const requestLogger = (req, res, next) => {
   const start = Date.now();
   const timestamp = new Date().toISOString();
 
   console.log(`[${timestamp}] ${req.method} ${req.path} - ${req.ip}`);
 
-  // Log response
   res.on('finish', () => {
     const duration = Date.now() - start;
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${res.statusCode} - ${duration}ms`);
@@ -54,7 +46,6 @@ const requestLogger = (req, res, next) => {
   next();
 };
 
-// Security headers middleware
 const securityHeaders = (req, res, next) => {
   res.set({
     'X-Content-Type-Options': 'nosniff',
@@ -68,7 +59,6 @@ const securityHeaders = (req, res, next) => {
   next();
 };
 
-// Request timeout middleware
 const timeout = (timeoutMs = 30000) => {
   return (req, res, next) => {
     const timeoutId = setTimeout(() => {

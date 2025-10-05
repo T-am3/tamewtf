@@ -41,7 +41,6 @@ export interface FetchResult<T> {
   error: string | null;
 }
 
-// Custom error classes for better error handling
 export class MarkdownParseError extends Error {
   public readonly filePath?: string;
 
@@ -64,21 +63,17 @@ export class NetworkError extends Error {
   }
 }
 
-// Helper function to parse tags from metadata
 function parseTags(metadata: Record<string, string>): string[] {
   const tagsString = metadata.tags || metadata.tag || "";
   if (!tagsString) return [];
 
-  // Handle both comma-separated and array-like formats
   if (tagsString.startsWith("[") && tagsString.endsWith("]")) {
-    // Parse array format: ["tag1", "tag2", "tag3"]
     return tagsString
       .slice(1, -1)
       .split(",")
       .map((tag) => tag.trim().replace(/['"]/g, ""))
       .filter((tag) => tag.length > 0);
   } else {
-    // Parse comma-separated format: tag1, tag2, tag3
     return tagsString
       .split(",")
       .map((tag) => tag.trim())
@@ -86,14 +81,12 @@ function parseTags(metadata: Record<string, string>): string[] {
   }
 }
 
-// Parse markdown frontmatter and content
 export function parseMarkdown(markdown: string): MarkdownParseResult {
   try {
     const lines = markdown.split("\n");
     const metadata: Record<string, string> = {};
     let contentStartIndex = 0;
 
-    // Check for YAML frontmatter
     if (lines[0]?.trim() === "---") {
       let yamlEnd = -1;
       for (let i = 1; i < lines.length; i++) {
@@ -104,14 +97,12 @@ export function parseMarkdown(markdown: string): MarkdownParseResult {
       }
 
       if (yamlEnd > 0) {
-        // Parse YAML frontmatter
         for (let i = 1; i < yamlEnd; i++) {
           const line = lines[i].trim();
           if (line.includes(":")) {
             const [key, ...valueParts] = line.split(":");
             let value = valueParts.join(":").trim();
 
-            // Remove quotes from value
             if (
               (value.startsWith('"') && value.endsWith('"')) ||
               (value.startsWith("'") && value.endsWith("'"))
@@ -137,7 +128,6 @@ export function parseMarkdown(markdown: string): MarkdownParseResult {
   }
 }
 
-// Convert markdown content to JSX-friendly format
 export function formatMarkdownContent(content: string): string {
   return content
     .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
@@ -148,7 +138,6 @@ export function formatMarkdownContent(content: string): string {
     );
 }
 
-// Generate slug from title
 export function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -158,7 +147,6 @@ export function generateSlug(title: string): string {
     .trim();
 }
 
-// Fetch and parse a markdown file
 export async function fetchMarkdownFile(path: string): Promise<MarkdownParseResult> {
   try {
     const response = await fetch(path);
@@ -173,7 +161,6 @@ export async function fetchMarkdownFile(path: string): Promise<MarkdownParseResu
 
     const markdown = await response.text();
 
-    // Check if we got HTML instead of markdown (happens in dev when file doesn't exist)
     if (
       markdown.trim().startsWith("<!doctype html>") ||
       markdown.trim().startsWith("<html")
@@ -193,16 +180,13 @@ export async function fetchMarkdownFile(path: string): Promise<MarkdownParseResu
   }
 }
 
-// Get all blog posts
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   let blogSlugs: string[] = [];
 
   try {
-    // Try to fetch the manifest file first
     const manifestResponse = await fetch('/blog/blogs.json');
     blogSlugs = await manifestResponse.json();
   } catch {
-    // Fallback to empty array if manifest doesn't exist
     blogSlugs = [];
   }
 
@@ -225,7 +209,6 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       });
     } catch (error) {
       console.warn(`Failed to load blog post ${slug}:`, error instanceof Error ? error.message : error);
-      // Continue with other posts instead of failing completely
     }
   }
 
@@ -234,7 +217,6 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
   );
 }
 
-// Get single blog post by slug
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
     const result = await fetchMarkdownFile(`/blog/${slug}.md`);
@@ -260,16 +242,13 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   }
 }
 
-// Get all projects
 export async function getAllProjects(): Promise<Project[]> {
   let projectSlugs: string[] = [];
 
   try {
-    // Try to fetch the manifest file first
     const manifestResponse = await fetch('/projects/projects.json');
     projectSlugs = await manifestResponse.json();
   } catch {
-    // Fallback to empty array if manifest doesn't exist
     projectSlugs = [];
   }
 
@@ -306,7 +285,6 @@ export async function getAllProjects(): Promise<Project[]> {
   return projects;
 }
 
-// Get single project by slug
 export async function getProject(slug: string): Promise<Project | null> {
   const result = await fetchMarkdownFile(`/projects/${slug}.md`);
   if (!result) return null;
@@ -331,7 +309,6 @@ export async function getProject(slug: string): Promise<Project | null> {
   };
 }
 
-// Get all unique tags from blog posts
 export async function getAllBlogTags(): Promise<string[]> {
   try {
     const posts = await getAllBlogPosts();
@@ -342,7 +319,6 @@ export async function getAllBlogTags(): Promise<string[]> {
   }
 }
 
-// Get all unique tags from projects
 export async function getAllProjectTags(): Promise<string[]> {
   try {
     const projects = await getAllProjects();

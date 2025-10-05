@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-// Import fetch dynamically for node-fetch v3+
 const getFetch = async () => {
   try {
-    // Try native fetch first (Node.js 18+)
     if (global.fetch) {
       return global.fetch;
     }
-    // Fallback to node-fetch v3+
     const { default: fetch } = await import('node-fetch');
     return fetch;
   } catch (error) {
@@ -16,7 +13,6 @@ const getFetch = async () => {
   }
 };
 
-// Middleware to validate LastFM API key
 const validateApiKey = (req, res, next) => {
   const apiKey = process.env.LASTFM_API_KEY;
   if (!apiKey) {
@@ -29,7 +25,6 @@ const validateApiKey = (req, res, next) => {
   next();
 };
 
-// Middleware to validate LastFM username
 const validateUsername = (req, res, next) => {
   if (!process.env.DEFAULT_LASTFM_USERNAME) {
     return res.status(500).json({
@@ -40,10 +35,8 @@ const validateUsername = (req, res, next) => {
   next();
 };
 
-// Hardcoded username for security - read from environment variable
 const USERNAME = process.env.DEFAULT_LASTFM_USERNAME || 'tam3_';
 
-// GET /lastfm/recent - Get user's recent tracks
 router.get('/recent', validateApiKey, validateUsername, async (req, res) => {
   try {
     const { limit = 1 } = req.query;
@@ -62,13 +55,11 @@ router.get('/recent', validateApiKey, validateUsername, async (req, res) => {
 
     const data = await response.json();
 
-    // Handle LastFM API errors
     if (data.error) {
       const errorResponse = handleLastFMError(data.error, data.message, USERNAME);
       return res.status(errorResponse.status).json(errorResponse.body);
     }
 
-    // Extract track information
     const tracks = data.recenttracks?.track;
     if (!tracks || tracks.length === 0) {
       return res.json({
@@ -78,7 +69,6 @@ router.get('/recent', validateApiKey, validateUsername, async (req, res) => {
       });
     }
 
-    // Handle single track (when limit=1) vs multiple tracks
     const trackList = Array.isArray(tracks) ? tracks : [tracks];
 
     const formattedTracks = trackList.map(track => ({
@@ -107,7 +97,6 @@ router.get('/recent', validateApiKey, validateUsername, async (req, res) => {
   }
 });
 
-// GET /lastfm/top-tracks - Get user's top tracks
 router.get('/top-tracks', validateApiKey, validateUsername, async (req, res) => {
   try {
     const { period = '7day', limit = 10 } = req.query;
@@ -156,7 +145,6 @@ router.get('/top-tracks', validateApiKey, validateUsername, async (req, res) => 
   }
 });
 
-// Helper function to handle LastFM API errors
 function handleLastFMError(errorCode, errorMessage, username) {
   switch (errorCode) {
     case 6:

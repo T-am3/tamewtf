@@ -17,7 +17,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Memoize floating particles to prevent regeneration on every render
   const floatingParticles = useMemo(() => {
     return [...Array(80)].map((_, i) => ({
       id: i,
@@ -37,11 +36,9 @@ export default function Home() {
         getAllProjects(),
         getAllBlogPosts(),
       ]);
-      // Get featured projects and limit to 4
       const featured = projects.filter((p) => p.featured).slice(0, 4);
       setWorkItems(featured);
 
-      // Get recent blog posts and limit to 3
       const recentPosts = posts.slice(0, 3);
       setBlogPosts(recentPosts);
     } catch (err) {
@@ -59,11 +56,8 @@ export default function Home() {
 
   return (
     <div className="w-full relative">
-      {/* Hero Section */}
       <section className="relative flex items-center justify-center min-h-screen px-4 pb-20 overflow-hidden bg-gradient-to-br from-gray-900/30 via-black to-purple-900/20 -mt-16 pt-16">
-        {/* Enhanced animated background */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Floating particles */}
           {floatingParticles.map((particle) => (
             <div
               key={particle.id}
@@ -204,7 +198,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Glimpse */}
       <ScrollAnimation>
         <section
           id="about-section"
@@ -239,7 +232,6 @@ export default function Home() {
         </section>
       </ScrollAnimation>
 
-      {/* Work Glimpse */}
       <ScrollAnimation>
         <section className="py-20 px-4 border-t border-gray-800/50">
           <div className="max-w-6xl mx-auto">
@@ -400,7 +392,6 @@ export default function Home() {
         </section>
       </ScrollAnimation>
 
-      {/* Blog Glimpse */}
       <ScrollAnimation>
         <section className="py-20 px-4 border-t border-gray-800/50">
           <div className="max-w-6xl mx-auto">
@@ -429,7 +420,6 @@ export default function Home() {
 
             <div className="space-y-8">
               {isLoading ? (
-                // Loading skeleton for blog posts
                 [...Array(3)].map((_, i) => (
                   <div
                     key={i}
@@ -518,7 +508,6 @@ export default function Home() {
                           </div>
                         )}
 
-                        {/* Blog Content */}
                         <div
                           className={`p-8 ${
                             post.previewImage ? "md:w-2/3" : "w-full"

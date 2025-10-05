@@ -17,7 +17,7 @@ export default function ProjectDetail() {
         const projectData = await getProject(slug)
         setProject(projectData)
       } catch {
-        // Error loading project - silently fail
+        // silently fail
       } finally {
         setLoading(false)
       }
@@ -83,7 +83,6 @@ export default function ProjectDetail() {
           </div>
         </ScrollAnimation>
 
-        {/* Project Header */}
         <ScrollAnimation delay={200}>
           <header className="mb-12">
             {(project.date || project.year) && (
@@ -104,7 +103,6 @@ export default function ProjectDetail() {
               </p>
             )}
 
-            {/* Links */}
             <div className="flex gap-4">
               {project.liveUrl && (
                 <a 
@@ -130,7 +128,6 @@ export default function ProjectDetail() {
           </header>
         </ScrollAnimation>
 
-        {/* Project Image */}
         {project.previewImage && (
           <ScrollAnimation delay={300}>
             <div className="mb-12">
@@ -145,7 +142,6 @@ export default function ProjectDetail() {
           </ScrollAnimation>
         )}
 
-        {/* Article Content */}
         <ScrollAnimation delay={400}>
           <article className="prose prose-invert prose-lg max-w-none">
             <div className="text-gray-300 leading-relaxed space-y-6">
@@ -218,7 +214,6 @@ export default function ProjectDetail() {
           </article>
         </ScrollAnimation>
 
-        {/* Navigation */}
         <ScrollAnimation delay={600}>
           <div className="mt-16 pt-8 border-t border-gray-800">
             <div className="flex justify-end items-center">
