@@ -154,7 +154,7 @@ export default function Home() {
             >
               <Link
                 to="/projects"
-                className="inline-flex items-center px-8 py-4 bg-white text-black rounded-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 pulse-glow font-medium"
+                className="inline-flex items-center px-8 py-4 bg-white text-black rounded-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 font-medium"
               >
                 check out my stuff
                 <svg
