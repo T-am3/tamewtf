@@ -74,7 +74,6 @@ export default function Home() {
             />
           ))}
 
-          {/* Gradient orbs */}
           <div
             className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse"
             style={{ animationDuration: "8s" }}
@@ -104,6 +103,7 @@ export default function Home() {
                     viewBox="0 0 136 16"
                     className="absolute -bottom-1 left-0 w-full h-auto"
                     fill="none"
+                    aria-hidden="true"
                   >
                     <path
                       d="M2 7.5L22.7221 3.77001C24.7662 3.40208 26.5324 5.22102 26.1046 7.25337V7.25337C25.6275 9.5194 27.8464 11.4157 30.0104 10.5913L41.1145 6.36115C43.27 5.54001 45.4994 7.37821 45.1042 9.65071V9.65071C44.6694 12.1509 47.3636 14.0124 49.5483 12.7214L61.5257 5.6439C63.3084 4.59051 65.5124 6.08819 65.1895 8.13347V8.13347C64.8894 10.0336 66.7973 11.5215 68.5671 10.7677L86.3296 3.20222C88.558 2.25307 90.9521 4.15044 90.5371 6.53679V6.53679C90.1075 9.00673 92.6714 10.9143 94.9137 9.79314L100.628 6.93623C102.703 5.89841 105.096 7.60068 104.795 9.90183V9.90183C104.479 12.3313 107.133 14.0326 109.208 12.7297L120.741 5.48839C122.552 4.35102 124.849 5.91941 124.448 8.02048V8.02048C124.065 10.0331 126.175 11.5986 127.99 10.6479L134 7.5"
@@ -112,15 +112,14 @@ export default function Home() {
                       strokeLinecap="round"
                       strokeDasharray="450"
                       strokeDashoffset="450"
-                      className="animate-[drawLoop_4s_ease-in-out_1s_infinite]"
+                      className="scribble-path"
                     />
                   </svg>
                 </span>
                 <img
                   src={wavingHandWebp}
                   alt="waving hand"
-                  className="inline w-12 h-12 md:w-16 md:h-16 ml-3 animate-bounce"
-                  style={{ animationDelay: "2s" }}
+                  className="inline w-12 h-12 md:w-16 md:h-16 ml-3 "
                 />
                 , programmer
               </h1>
@@ -144,7 +143,6 @@ export default function Home() {
               one step at a time
             </h3>
 
-            {/* CTA buttons */}
             <div
               className={`flex flex-col sm:flex-row gap-4 pt-8 transition-all duration-1000 delay-700 ${
                 isLoaded
